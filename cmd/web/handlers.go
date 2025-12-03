@@ -10,13 +10,16 @@ func home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello"))
 }
 func (a *application) about(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.ParseFiles("./ui/html/pages/about.html")
+	files := []string{
+		"./ui/html/base.html", "./ui/html/pages/about.html",
+	}
+	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		a.logger.Error(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	err = ts.Execute(w, nil)
+	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
 		a.logger.Error(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
