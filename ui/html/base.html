@@ -11,8 +11,9 @@
 		<header>
 			<h3><a href='/'>ElGopher</a></h3>
 		</header>
+		{{template "nav" .}}
 		<main>
-			{{template "main"}}
+			{{template "main" .}}
 		</main>
 	<footer>© 2025 El Gopher — Built with Go</footer>
 	</body>

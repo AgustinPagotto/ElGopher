@@ -11,7 +11,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 func (a *application) about(w http.ResponseWriter, r *http.Request) {
 	files := []string{
-		"./ui/html/base.html", "./ui/html/pages/about.html",
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/about.html",
 	}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
