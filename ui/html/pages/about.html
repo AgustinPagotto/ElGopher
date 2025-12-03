@@ -1,43 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About – El Gopher</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        header {
-            margin-bottom: 30px;
-        }
-        h1 {
-            margin-bottom: 10px;
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            color: #888;
-        }
-    </style>
-</head>
-<body>
-
+{{define "title"}}About{{end}}
+{{define "main"}}
 <header>
     <h1>About El Gopher</h1>
-    <p>A small development corner built with Go, HTMX, and PostgreSQL.</p>
+    <p>A personal space to share my projects, and articles that i have written</p>
 </header>
 
 <section>
-    <h2>What is El Gopher?</h2>
+    <h2>Who am I?</h2>
     <p>
-        El Gopher is my personal space on the internet — a place to share articles,
-        projects, and experiments as I learn and build with Go.  
-        It’s intentionally simple, fast, and minimal.
+        I'm Agustin Oliveros a developer from Argentina, exploring backend development, Go, and
+        building things that feel good to use.
     </p>
 </section>
 
@@ -49,18 +21,5 @@
         <li><strong>PostgreSQL</strong> for persistence</li>
     </ul>
 </section>
+{{end}}
 
-<section>
-    <h2>Who am I?</h2>
-    <p>
-        I'm a developer from Argentina, exploring backend development, Go, and
-        building things that feel good to use.
-    </p>
-</section>
-
-<div class="footer">
-    © 2025 El Gopher — Built with ❤️ and Go
-</div>
-
-</body>
-</html>

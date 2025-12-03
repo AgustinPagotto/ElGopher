@@ -1,0 +1,17 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{template "title" .}}</title>
+</head>
+	<body>
+		<header>
+			<h3><a href='/'>ElGopher</a></h3>
+		</header>
+		<main>
+			{{template "main"}}
+		</main>
+	<footer>© 2025 El Gopher — Built with Go</footer>
+	</body>
+{{end}}
