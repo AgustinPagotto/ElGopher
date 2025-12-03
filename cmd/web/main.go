@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 )
 
 type application struct {
@@ -16,8 +17,16 @@ func main() {
 	app := &application{
 		logger: logger,
 	}
+	srv := &http.Server{
+		Addr:         ":4000",
+		Handler:      app.routes(),
+		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
 	app.logger.Info("Starting server at :4000")
-	err := http.ListenAndServe(":4000", app.routes())
+	err := srv.ListenAndServe()
 	if err != nil {
 		fmt.Print(err)
 	}
