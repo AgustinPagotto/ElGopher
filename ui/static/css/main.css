@@ -22,22 +22,22 @@ header, nav, main, footer {
 
 main {
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 54px;
     min-height: calc(100vh - 345px);
     overflow: auto;
 }
 
-h1 a {
-    font-size: 36px;
+h1 {
+    font-size: 25px;
     font-weight: bold;
-    height: 36px;
-    padding-left: 50px;
-    position: relative;
+    height: 25px;
 }
 
-h1 a:hover {
-    text-decoration: none;
-    color: #34495E;
+h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    position: relative;
 }
 
 h3 a {
@@ -75,6 +75,7 @@ nav a{
 
 nav a:hover {
     text-decoration: underline;
+}
 
 nav a.live {
     color: #34495E;
@@ -88,4 +89,11 @@ nav a.live:hover {
 
 section {
     padding-top: 15px;
+}
+
+.scnd-header {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
 }
