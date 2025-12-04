@@ -43,26 +43,14 @@ h1 a:hover {
     color: #34495E;
 }
 
-h2 {
-    font-size: 22px;
-    margin-bottom: 36px;
-    position: relative;
-    top: -9px;
-}
-
 h3 a {
     font-size: 20px;
     color: #5E4934;
 }
 
-a {
-    color: #34495E;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #5E4934;
-    text-decoration: underline;
+h3 a {
+	text-decoration: none;
+	
 }
 
 header {
@@ -89,7 +77,7 @@ nav a.live {
 }
 
 nav a.live:hover {
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 nav {
@@ -107,9 +95,4 @@ nav a{
 
 nav a:hover {
     text-decoration: underline;
-}
-
-nav a.active {
-    color: #62CB31;
-    font-weight: 700;
 }
