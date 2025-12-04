@@ -6,10 +6,11 @@ import (
 	"strconv"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello"))
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, http.StatusOK, "home.html")
 }
-func (a *application) about(w http.ResponseWriter, r *http.Request) {
+func (app *application) about(w http.ResponseWriter, r *http.Request) {
+
 	files := []string{
 		"./ui/html/base.html",
 		"./ui/html/partials/nav.html",
@@ -17,13 +18,13 @@ func (a *application) about(w http.ResponseWriter, r *http.Request) {
 	}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		a.logger.Error(err.Error())
+		app.logger.Error(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		a.logger.Error(err.Error())
+		app.logger.Error(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

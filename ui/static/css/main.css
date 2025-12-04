@@ -50,15 +50,21 @@ h2 {
     top: -9px;
 }
 
+h3 a {
+    font-size: 20px;
+    color: #5E4934;
+}
+
 a {
-    color: #62CB31;
+    color: #34495E;
     text-decoration: none;
 }
 
 a:hover {
-    color: #4EB722;
+    color: #5E4934;
     text-decoration: underline;
 }
+
 header {
     display: flex;
     align-items: center;
@@ -79,30 +85,31 @@ header .brand {
 nav a.live {
     color: #34495E;
     cursor: default;
+	text-decoration: underline;
 }
 
 nav a.live:hover {
     text-decoration: none;
 }
 
-.header-nav {
+nav {
     display: flex;
     gap: 28px;
     align-items: center;
 }
 
-.header-nav .nav-link {
+nav a{
     color: #34495E;
     text-decoration: none;
     font-size: 16px;
     padding: 6px 0;
 }
 
-.header-nav .nav-link:hover {
+nav a:hover {
     text-decoration: underline;
 }
 
-.header-nav .nav-link.active {
+nav a.active {
     color: #62CB31;
     font-weight: 700;
 }
