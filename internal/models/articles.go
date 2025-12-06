@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Article struct {
@@ -25,7 +27,7 @@ type ArticleModelInterface interface {
 }
 
 type ArticleModel struct {
-	DB *sql.DB
+	DB *pgxpool.Pool
 }
 
 func (am *ArticleModel) Insert(title, body string) error {
@@ -38,18 +40,18 @@ func (am *ArticleModel) Insert(title, body string) error {
 	return nil
 }
 
-func (am *ArticleModel) Get(id int) (*Article, error) {
+func (am *ArticleModel) Get(id int) (Article, error) {
 	var article Article
 	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = ?;`
 	err := am.DB.QueryRow(sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, ErrNoRecord
+			return Article{}, ErrNoRecord
 		} else {
-			return nil, err
+			return Article{}, err
 		}
 	}
-	return &article, nil
+	return article, nil
 }
 
 func (am *ArticleModel) GetLastFive() ([]Article, error) {
