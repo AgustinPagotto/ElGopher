@@ -8,6 +8,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 	mux.HandleFunc("/{$}", app.home)
 	mux.HandleFunc("/about", app.about)
+	mux.HandleFunc("/articles", app.viewArticles)
 	mux.HandleFunc("/article/create", articleCreate)
 	mux.HandleFunc("/article/view/{id}", articleView)
 	return mux
