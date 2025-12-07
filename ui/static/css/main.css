@@ -157,3 +157,38 @@ margin: 0;
 color: #d3cdcd;
 line-height: 1.5;
 }
+
+.project {
+padding: 1.5rem;
+margin-bottom: 1.2rem;
+border-width: 1px;
+border-style: solid;
+border-color: white;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.project-inner {
+display: flex;
+gap: 20px;
+align-items: flex-start;
+justify-content: flex-start;
+}
+
+.project img {
+width: 300px;
+height: auto;
+object-fit: cover;
+border: 1px solid white;
+}
+
+.project h2 {
+	text-align: center;
+}
+
+.project-summary {
+color: #cfcfcf;
+max-width: 600px;
+line-height: 1.5;
+}
