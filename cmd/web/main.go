@@ -21,7 +21,7 @@ type application struct {
 }
 
 func main() {
-	dsn := flag.String("dsn", "postgres://postgres:admin@localhost:5432/elgopher", "String connection for PostgreSql")
+	dsn := flag.String("dsn", "postgres://postgres:admin@localhost:5432/elgopher", "PostgreSQL data source name")
 	flag.Parse()
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
 	var ctx = context.Background()
