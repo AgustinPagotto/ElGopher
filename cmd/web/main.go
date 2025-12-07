@@ -21,14 +21,16 @@ type application struct {
 }
 
 func main() {
-	dsn := flag.String("dsn", "postgres://postgres:admin@localhost:5432/gotodo", "String connection for PostgreSql")
+	dsn := flag.String("dsn", "postgres://postgres:admin@localhost:5432/elgopher", "String connection for PostgreSql")
 	flag.Parse()
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
-	db, err := openDB(*dsn)
+	var ctx = context.Background()
+	db, err := openDB(*dsn, ctx)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
+	logger.Info("connected to the database")
 	defer db.Close()
 	templateCache, err := newTemplateCache()
 	if err != nil {
@@ -38,7 +40,7 @@ func main() {
 	app := &application{
 		logger:        logger,
 		templateCache: templateCache,
-		articles:      &models.ArticleModel{DB: db},
+		articles:      &models.ArticleModel{DB: db, Ctx: ctx},
 	}
 	srv := &http.Server{
 		Addr:         ":4000",
@@ -55,9 +57,8 @@ func main() {
 	}
 }
 
-func openDB(dsn string) (*pgxpool.Pool, error) {
+func openDB(dsn string, ctx context.Context) (*pgxpool.Pool, error) {
 	var err error
-	var ctx = context.Background()
 	pool, err := pgxpool.New(ctx, dsn)
 
 	if err != nil {
