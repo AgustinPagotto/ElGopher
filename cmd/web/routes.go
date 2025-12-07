@@ -9,6 +9,7 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/{$}", app.home)
 	mux.HandleFunc("/about", app.about)
 	mux.HandleFunc("/articles", app.viewArticles)
+	mux.HandleFunc("/projects", app.viewProjects)
 	mux.HandleFunc("/article/create", articleCreate)
 	mux.HandleFunc("/article/view/{id}", articleView)
 	return mux

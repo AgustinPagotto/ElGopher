@@ -42,3 +42,6 @@ func articleView(w http.ResponseWriter, r *http.Request) {
 func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "articles.html")
 }
+func (app *application) viewProjects(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, http.StatusOK, "projects.html")
+}
