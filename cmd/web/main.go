@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"flag"
 	"fmt"
 	"html/template"
@@ -12,6 +13,7 @@ import (
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
 )
 
 type application struct {
@@ -40,7 +42,7 @@ func main() {
 	app := &application{
 		logger:        logger,
 		templateCache: templateCache,
-		articles:      &models.ArticleModel{DB: db, Ctx: ctx},
+		articles:      &models.ArticleModel{DB: db},
 	}
 	srv := &http.Server{
 		Addr:         ":4000",
@@ -57,10 +59,9 @@ func main() {
 	}
 }
 
-func openDB(dsn string, ctx context.Context) (*pgxpool.Pool, error) {
+func openDB(dsn string, ctx context.Context) (*sql.DB, error) {
 	var err error
 	pool, err := pgxpool.New(ctx, dsn)
-
 	if err != nil {
 		return nil, err
 	}
@@ -68,5 +69,7 @@ func openDB(dsn string, ctx context.Context) (*pgxpool.Pool, error) {
 	if err := pool.Ping(ctx); err != nil {
 		return nil, err
 	}
-	return pool, nil
+
+	db := stdlib.OpenDBFromPool(pool)
+	return db, nil
 }
