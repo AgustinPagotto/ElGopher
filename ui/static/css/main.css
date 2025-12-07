@@ -143,17 +143,17 @@ border-width: 1px;
 
 .article:hover {
 transform: translateY(-3px);
-box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+box-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
 }
 
 .article-title {
 margin: 0 0 0.5rem 0;
 font-size: 1.4rem;
-color: #34495E;
+color: #345E5E;
 }
 
 .article-summary {
 margin: 0;
-color: #6a5e5e;
+color: #d3cdcd;
 line-height: 1.5;
 }
