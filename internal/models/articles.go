@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"time"
@@ -27,13 +28,14 @@ type ArticleModelInterface interface {
 }
 
 type ArticleModel struct {
-	DB *pgxpool.Pool
+	DB  *pgxpool.Pool
+	Ctx context.Context
 }
 
 func (am *ArticleModel) Insert(title, body string) error {
 	//Create 2 helper functions, one that generates the SLUG, another the Excerpt
 	sqlQuery := `INSERT INTO articles (title, body, slug, excerpt, created, updated) VALUES (?, ?, UTC_TIMESTAMP());`
-	_, err := am.DB.Exec(sqlQuery, title, body)
+	_, err := am.DB.Exec(am.Ctx, sqlQuery, title, body)
 	if err != nil {
 		return err
 	}
@@ -43,7 +45,7 @@ func (am *ArticleModel) Insert(title, body string) error {
 func (am *ArticleModel) Get(id int) (Article, error) {
 	var article Article
 	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = ?;`
-	err := am.DB.QueryRow(sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
+	err := am.DB.QueryRow(am.Ctx, sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return Article{}, ErrNoRecord
@@ -56,7 +58,7 @@ func (am *ArticleModel) Get(id int) (Article, error) {
 
 func (am *ArticleModel) GetLastFive() ([]Article, error) {
 	sqlQuery := `SELECT id, title, slug, excerpt, created, updated_at FROM articles WHERE is_published != false ORDER BY created DESC LIMIT 5;`
-	rows, err := am.DB.Query(sqlQuery)
+	rows, err := am.DB.Query(am.Ctx, sqlQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +80,7 @@ func (am *ArticleModel) GetLastFive() ([]Article, error) {
 
 func (am *ArticleModel) Delete(id int) error {
 	sqlQuery := `DELETE FROM articles WHERE id = ?;`
-	_, err := am.DB.Exec(sqlQuery, id)
+	_, err := am.DB.Exec(am.Ctx, sqlQuery, id)
 	if err != nil {
 		return err
 	}
