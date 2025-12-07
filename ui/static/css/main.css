@@ -114,7 +114,7 @@ section {
     display: flex;
     gap: 24px;
     align-items: center;
-	justify-content: center;
+    justify-content: center;
     margin-top: 10px;
 }
 
@@ -124,4 +124,36 @@ section {
 
 .contact-item:hover svg {
     opacity: 0.7;
+}
+
+.container {
+max-width: 100%;
+margin-top: 25px;
+padding: 1rem;
+}
+
+.article {
+padding: 1.5rem;
+margin-bottom: 1.2rem;
+border-color: #FFFFFF;
+border-width: 1px;
+  border-style: solid;
+  border-color: white;
+}
+
+.article:hover {
+transform: translateY(-3px);
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.article-title {
+margin: 0 0 0.5rem 0;
+font-size: 1.4rem;
+color: #34495E;
+}
+
+.article-summary {
+margin: 0;
+color: #6a5e5e;
+line-height: 1.5;
 }

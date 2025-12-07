@@ -39,3 +39,6 @@ func articleView(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte("articleView"))
 }
+func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, http.StatusOK, "articles.html")
+}
