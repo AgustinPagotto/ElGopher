@@ -1,94 +1,37 @@
 * {
-    margin: 0;
-    padding: 0;
-    font-size: 18px;
-    font-family: "Roboto Mono", monospace;
-    color: #FFFFFF;
-}
-
-html, body {
-    height: 100%;
-}
-
-body {
-    line-height: 1.5;
-    background-color: #000000;
-    overflow-y: scroll;
+  font-family: "Roboto Mono", monospace;
 }
 
 header, nav, main, footer {
-    padding: 2px calc((100% - 1200px) / 2) 0;
+	padding: 2px calc((100% - 1200px) / 2) 0;
 }
 
-main {
-    margin-top: 20px;
-    margin-bottom: 54px;
-    min-height: calc(100vh - 345px);
-    overflow: auto;
-}
-
-h1 {
-    font-size: 25px;
-    font-weight: bold;
-    height: 25px;
-}
-
-h2 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    position: relative;
-}
-
-h3 a {
-    font-size: 20px;
-    color: #5E4934;
-}
-
-h3 a {
-    text-decoration: none;
-}
-
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding-top: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #E4E5E7;
-    background: transparent;
+header { 
+	display: flex; 
+	align-items: center; 
+	justify-content: space-between; 
+	border-bottom: 1px solid #E4E5E7;
+	padding-top: 15px; 
+	padding-bottom: 10px;
 }
 
 nav {
-    display: flex;
-    gap: 28px;
-    align-items: center;
+    gap: 1rem;
+	display: flex; 
+	align-items: center;
 }
 
-nav a{
-    color: #34495E;
+nav a {
     text-decoration: none;
-    font-size: 16px;
-    padding: 6px 0;
 }
 
 nav a:hover {
     text-decoration: underline;
 }
 
-nav a.live {
-    color: #34495E;
-    cursor: default;
-    text-decoration: underline;
-}
-
-nav a.live:hover {
-    text-decoration: underline;
-}
-
-section {
-    padding-top: 15px;
+nav a.live { 
+	cursor: default;
+	text-decoration: underline; 
 }
 
 .scnd-header {
@@ -100,14 +43,19 @@ section {
 
 .brand {
     display: flex;
-    align-items: center;
     gap: 8px;
+align-items: center;
 }
 .brand img {
     width: 28px;
     height: 28px;
     object-fit: contain;
     display: block;
+}
+.brand h4 {
+    margin: 0;             /* <-- override Pico default margin */
+    line-height: 1;        /* cleaner vertical alignment */
+    padding: 0;
 }
 
 .contact-row {
