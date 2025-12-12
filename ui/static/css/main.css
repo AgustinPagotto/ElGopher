@@ -2,6 +2,14 @@
   font-family: "Roboto Mono", monospace;
 }
 
+div.flash {
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #34495E;
+    padding: 18px;
+    margin-bottom: 36px;
+    text-align: center;
+}
 header, nav, main, footer {
 	padding: 2px calc((100% - 1200px) / 2) 0;
 }
@@ -22,6 +30,7 @@ nav {
 }
 
 nav a {
+	font-size: 0.9rem;
     text-decoration: none;
 }
 

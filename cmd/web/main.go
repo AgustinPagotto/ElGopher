@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
+	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/stdlib"
 )
@@ -20,6 +21,7 @@ type application struct {
 	logger        *slog.Logger
 	templateCache map[string]*template.Template
 	articles      models.ArticleModelInterface
+	formDecoder   *form.Decoder
 }
 
 func main() {
@@ -39,10 +41,12 @@ func main() {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
+	formDecoder := form.NewDecoder()
 	app := &application{
 		logger:        logger,
 		templateCache: templateCache,
 		articles:      &models.ArticleModel{DB: db},
+		formDecoder:   formDecoder,
 	}
 	srv := &http.Server{
 		Addr:         ":4000",

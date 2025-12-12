@@ -18,7 +18,7 @@ type Article struct {
 }
 
 type ArticleModelInterface interface {
-	Insert(title, body string) error
+	Insert(title, body string, publish bool) (int, error)
 	Delete(id int) error
 	Get(id int) (Article, error)
 	GetLastFive() ([]Article, error)
@@ -28,14 +28,18 @@ type ArticleModel struct {
 	DB *sql.DB
 }
 
-func (am *ArticleModel) Insert(title, body string) error {
+func (am *ArticleModel) Insert(title, body string, publish bool) (int, error) {
 	//Create 2 helper functions, one that generates the SLUG, another the Excerpt
 	sqlQuery := `INSERT INTO articles (title, body, slug, excerpt, created, updated) VALUES (?, ?, UTC_TIMESTAMP());`
-	_, err := am.DB.Exec(sqlQuery, title, body)
+	result, err := am.DB.Exec(sqlQuery, title, body)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return int(id), nil
 }
 
 func (am *ArticleModel) Get(id int) (Article, error) {
