@@ -3,7 +3,15 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+
+	"github.com/AgustinPagotto/ElGopher/internal/models"
 )
+
+type templateData struct {
+	Articles []models.Article
+	Errors   []string
+	Form     any
+}
 
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
