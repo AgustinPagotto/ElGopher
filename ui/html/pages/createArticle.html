@@ -3,20 +3,22 @@
 <div class="scnd-header">
 <h1>New Article</h1>
 </div>
+<p id="errors"></p>
 <form 
-        hx-post="/articles/create"
-	hx-target="#errors"
-	hx-swap="outerHTML"
-	novalidate
+    hx-post="/articles/create"
+    hx-target="#errors"
+    hx-swap="outerHTML"
+    hx-indicator="#errors"
+    novalidate
         >
             <label for="title">
                 Title
-                <input type="text" id="title" name="title" placeholder="Enter the post title" required>
+                <input type="text" id="title" name="title" placeholder="Enter the post title">
             </label>
 
             <label for="body">
                 Body
-                <textarea id="body" name="body" placeholder="Write your content…" rows="6" required></textarea>
+                <textarea id="body" name="body" placeholder="Write your content…" rows="6" ></textarea>
             </label>
 
             <label for="published">
