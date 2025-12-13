@@ -11,20 +11,30 @@
     hx-indicator="#errors"
     novalidate
         >
+	<div id="field-title">
             <label for="title">
                 Title
-                <input type="text" id="title" name="title" placeholder="Enter the post title">
-            </label>
 
-            <label for="body">
-                Body
-                <textarea id="body" name="body" placeholder="Write your content…" rows="6" ></textarea>
+{{with .Form.FieldErrors.title}}
+<label class='error'>{{.}}</label>
+{{end}}
             </label>
+                <input type="text" id="title" name="title" placeholder="Enter the post title">
+	</div>
+	<div id="field-body">
+            <label for="body">
+               Body	
+{{with .Form.FieldErrors.body}}
+<label class='error'>{{.}}</label>
+{{end}}
+            </label>
+                <textarea id="content" name="content" placeholder="Write your content…" rows="6" ></textarea>
+	</div>
 
             <label for="published">
                 Publish Now?
-                <input type="checkbox" id="published" name="published" role="switch">
             </label>
+                <input type="checkbox" id="published" name="published" role="switch">
 
             <button type="submit" class="contrast">
                 Save Post
