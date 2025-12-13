@@ -1,9 +1,12 @@
-<div id="errors">
-    <div class="notice error">
-        <ul>
-            {{range .Errors}}
-                <li>{{.}}</li>
-            {{end}}
-        </ul>
-    </div>
-</div>
+<article
+    id="errors"
+    class="pico-background-red-600"
+    role="alert"
+>
+    <h5>There were problems with your submission</h5>
+    <ul>
+        {{range .Form.Errors}}
+            <li>{{.}}</li>
+        {{end}}
+    </ul>
+</article>

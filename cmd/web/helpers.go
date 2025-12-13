@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"runtime/debug"
 
@@ -58,4 +59,12 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 
 func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{}
+}
+
+func renderRawTemplate(w http.ResponseWriter, path string, data any) error {
+	ts, err := template.ParseFiles(path)
+	if err != nil {
+		return err
+	}
+	return ts.Execute(w, data)
 }

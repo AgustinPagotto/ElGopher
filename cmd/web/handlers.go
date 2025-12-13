@@ -51,6 +51,9 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
 	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
 	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		renderRawTemplate(w, "./ui/html/partials/errors.html", data)
 		return
 	}
 	id, err := app.articles.Insert(form.Title, form.Content, form.Publish)
