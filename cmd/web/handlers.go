@@ -11,7 +11,7 @@ import (
 
 type articleCreateForm struct {
 	Title               string `form:"title"`
-	Content             string `form:"content"`
+	Body                string `form:"body"`
 	Publish             bool   `form:"publish"`
 	validator.Validator `form:"-"`
 }
@@ -49,14 +49,14 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
-	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Body), "body", "This field cannot be blank")
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
 		renderRawTemplate(w, "./ui/html/partials/errors.html", data)
 		return
 	}
-	id, err := app.articles.Insert(form.Title, form.Content, form.Publish)
+	id, err := app.articles.Insert(form.Title, form.Body, form.Publish)
 	if err != nil {
 		app.serverError(w, r, err)
 	}
