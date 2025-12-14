@@ -58,7 +58,9 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 }
 
 func (app *application) newTemplateData(r *http.Request) templateData {
-	return templateData{}
+	return templateData{
+		Form: map[string]string{},
+	}
 }
 
 func renderRawTemplate(w http.ResponseWriter, path string, data any) error {
