@@ -70,15 +70,17 @@ func (app *application) articleCreateTitleVerification(w http.ResponseWriter, r 
 		w.WriteHeader(http.StatusOK)
 		errMsg = "Title cannot be blank"
 	}
-	tmpl, err := template.ParseFiles("./ui/html/partials/field_error.html")
-	if err != nil {
-		app.serverError(w, r, err)
-		return
+	app.renderHtmxPartial(w, r, "field_error", errMsg)
+}
+
+func (app *application) articleCreateBodyVerification(w http.ResponseWriter, r *http.Request) {
+	body := r.URL.Query().Get("body")
+	var errMsg string
+	if !validator.NotBlank(body) {
+		w.WriteHeader(http.StatusOK)
+		errMsg = "Body cannot be blank"
 	}
-	err = tmpl.ExecuteTemplate(w, "field_error", errMsg)
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.renderHtmxPartial(w, r, "field_error", errMsg)
 }
 
 func articleView(w http.ResponseWriter, r *http.Request) {

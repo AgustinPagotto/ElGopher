@@ -41,6 +41,19 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 	buf.WriteTo(w)
 }
 
+func (app *application) renderHtmxPartial(w http.ResponseWriter, r *http.Request, partial string, data string) {
+	partialPath := fmt.Sprintf("./ui/html/partials/%s.html", partial)
+	tmpl, err := template.ParseFiles(partialPath)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	err = tmpl.ExecuteTemplate(w, partial, data)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+}
+
 func (app *application) decodePostForm(r *http.Request, dst any) error {
 	err := r.ParseForm()
 	if err != nil {
