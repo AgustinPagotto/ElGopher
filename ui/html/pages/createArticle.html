@@ -13,12 +13,12 @@
             <label for="title">
                 Title
                 <input type="text" id="title" name="title" placeholder="Enter the post title" hx-trigger="blur" hx-get="/articles/create/title" hx-target="next .error">
-		<span class="error">{{.Form.FieldErrors.title}}</span>
+		<small class="error">{{.Form.FieldErrors.title}}</small>
             </label>
             <label for="body">
                Body	
                 <textarea id="body" name="body" placeholder="Write your content…" rows="6" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error"></textarea>
-		<span class="error">{{.Form.FieldErrors.body}}</span>
+		<small class="error">{{.Form.FieldErrors.body}}</small>
             </label>
             <label for="published">
                 Publish Now?
