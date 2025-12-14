@@ -63,6 +63,16 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, fmt.Sprintf("/articles/view/%d", id), http.StatusSeeOther)
 }
 
+func (app *application) articleCreateTitleVerification(w http.ResponseWriter, r *http.Request) {
+	title := r.URL.Query().Get("title")
+	if !validator.NotBlank(title) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`<span class="error pico-color-red-600">Title cannot be blank</span>`))
+		return
+	}
+	w.Write([]byte(`<span class="error"></span>`))
+}
+
 func articleView(w http.ResponseWriter, r *http.Request) {
 	_, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {

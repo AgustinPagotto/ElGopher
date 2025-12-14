@@ -16,6 +16,7 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /projects", app.viewProjects)
 	mux.HandleFunc("GET /articles/create", app.articleCreate)
 	mux.HandleFunc("POST /articles/create", app.articleCreatePost)
+	mux.HandleFunc("GET /articles/create/title", app.articleCreateTitleVerification)
 	mux.HandleFunc("GET /articles/view/{id}", articleView)
 	return alice.New(app.recoverPanic, app.logRequest, commonHeaders).Then(mux)
 }

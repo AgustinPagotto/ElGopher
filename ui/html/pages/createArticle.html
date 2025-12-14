@@ -3,7 +3,6 @@
 <div class="scnd-header">
 <h1>New Article</h1>
 </div>
-<p id="errors"></p>
 <form 
     hx-post="/articles/create"
     hx-target="#errors"
@@ -11,26 +10,16 @@
     hx-indicator="#errors"
     novalidate
         >
-	<div id="field-title">
             <label for="title">
                 Title
-
-{{with .Form.FieldErrors.title}}
-<label class='error'>{{.}}</label>
-{{end}}
+                <input type="text" id="title" name="title" placeholder="Enter the post title" hx-trigger="blur" hx-get="/articles/create/title" hx-target="next .error">
+		<span class="error">{{.Form.FieldErrors.title}}</span>
             </label>
-                <input type="text" id="title" name="title" placeholder="Enter the post title">
-	</div>
-	<div id="field-body">
             <label for="body">
                Body	
-{{with .Form.FieldErrors.body}}
-<label class='error'>{{.}}</label>
-{{end}}
+                <textarea id="body" name="body" placeholder="Write your content…" rows="6" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error"></textarea>
+		<span class="error">{{.Form.FieldErrors.body}}</span>
             </label>
-                <textarea id="content" name="content" placeholder="Write your content…" rows="6" ></textarea>
-	</div>
-
             <label for="published">
                 Publish Now?
             </label>
