@@ -65,12 +65,20 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 
 func (app *application) articleCreateTitleVerification(w http.ResponseWriter, r *http.Request) {
 	title := r.URL.Query().Get("title")
+	var errMsg string
 	if !validator.NotBlank(title) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`<span class="error pico-color-red-600">Title cannot be blank</span>`))
+		errMsg = "Title cannot be blank"
+	}
+	tmpl, err := template.ParseFiles("./ui/html/partials/field_error.html")
+	if err != nil {
+		app.serverError(w, r, err)
 		return
 	}
-	w.Write([]byte(`<span class="error"></span>`))
+	err = tmpl.ExecuteTemplate(w, "field_error", errMsg)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func articleView(w http.ResponseWriter, r *http.Request) {
