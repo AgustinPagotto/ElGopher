@@ -15,12 +15,7 @@ header, nav, main, footer {
 }
 
 header { 
-	display: flex; 
-	align-items: center; 
-	justify-content: space-between; 
 	border-bottom: 1px solid #E4E5E7;
-	padding-top: 15px; 
-	padding-bottom: 10px;
 }
 
 nav {
@@ -55,7 +50,7 @@ nav a.live {
     gap: 8px;
 align-items: center;
 }
-.brand img {
+.logo {
     width: 28px;
     height: 28px;
     object-fit: contain;
@@ -90,29 +85,12 @@ padding: 1rem;
 }
 
 .article {
-padding: 1.5rem;
-margin-bottom: 1.2rem;
-border-color: #FFFFFF;
-border-width: 1px;
-  border-style: solid;
-  border-color: white;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .article:hover {
-transform: translateY(-3px);
-box-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
-}
-
-.article-title {
-margin: 0 0 0.5rem 0;
-font-size: 1.4rem;
-color: #345E5E;
-}
-
-.article-summary {
-margin: 0;
-color: #d3cdcd;
-line-height: 1.5;
+  transform: translateY(-2px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
 .project {

@@ -1,8 +1,14 @@
 {{define "nav"}}
-<nav hx-boost="true" >
-	<a href='/'>Home</a>
-	<a href='/articles'>Articles</a>
-	<a href='/projects'>Projects</a>
-	<a href='/about'>About</a>
+<nav>
+  <ul>
+    <li><img class="logo" src="/static/img/gopher.png" alt="logo"></li>
+    <li><strong>ElGopher</strong></li>
+  </ul>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/articles">Articles</a></li>
+    <li><a href="/projects">Projects</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
 </nav>
 {{end}}
