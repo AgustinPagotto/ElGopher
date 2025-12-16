@@ -2,35 +2,12 @@
   font-family: "Roboto Mono", monospace;
 }
 
-div.flash {
-    color: #FFFFFF;
-    font-weight: bold;
-    background-color: #34495E;
-    padding: 18px;
-    margin-bottom: 36px;
-    text-align: center;
-}
 header, nav, main, footer {
 	padding: 2px calc((100% - 1200px) / 2) 0;
 }
 
 header { 
 	border-bottom: 1px solid #E4E5E7;
-}
-
-nav {
-    gap: 1rem;
-	display: flex; 
-	align-items: center;
-}
-
-nav a {
-	font-size: 0.9rem;
-    text-decoration: none;
-}
-
-nav a:hover {
-    text-decoration: underline;
 }
 
 nav a.live { 
@@ -48,7 +25,7 @@ nav a.live {
 .brand {
     display: flex;
     gap: 8px;
-align-items: center;
+    align-items: center;
 }
 .logo {
     width: 28px;
@@ -57,8 +34,8 @@ align-items: center;
     display: block;
 }
 .brand h4 {
-    margin: 0;             /* <-- override Pico default margin */
-    line-height: 1;        /* cleaner vertical alignment */
+    margin: 0;
+    line-height: 1;
     padding: 0;
 }
 
@@ -78,12 +55,6 @@ align-items: center;
     opacity: 0.7;
 }
 
-.container {
-max-width: 100%;
-margin-top: 25px;
-padding: 1rem;
-}
-
 .article {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -93,53 +64,40 @@ padding: 1rem;
   box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
-.project {
-padding: 1.5rem;
-margin-bottom: 1.2rem;
-border-width: 1px;
-border-style: solid;
-border-color: white;
-display: flex;
-flex-direction: column;
-gap: 20px;
+.project img {
+  max-width: 300px;
+  height: auto;
 }
 
 .project-inner {
-display: flex;
-gap: 20px;
-align-items: flex-start;
-justify-content: flex-start;
+  display: flex;
+  gap: 1.5rem;
 }
 
-.project img {
-width: 300px;
-height: auto;
-object-fit: cover;
-border: 1px solid white;
+.project-description {
+  display: flex;
+  flex-direction: column;
 }
 
-.project h2 {
-	text-align: center;
-}
-
-.project-summary {
-color: #cfcfcf;
-max-width: 600px;
-line-height: 1.5;
+.project-description a {
+  margin-top: auto;
 }
 
 .grow-wrap {
   display: grid;
 }
+
 .grow-wrap::after {
   content: attr(data-replicated-value) " ";
   white-space: pre-wrap;
   visibility: hidden;
 }
+
 .grow-wrap > textarea {
   resize: none;
   overflow: hidden;
 }
+
 .grow-wrap > textarea,
 .grow-wrap::after {
   font: inherit;
