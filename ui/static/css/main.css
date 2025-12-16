@@ -2,12 +2,13 @@
   font-family: "Roboto Mono", monospace;
 }
 
-header, nav, main, footer {
-	padding: 2px calc((100% - 1200px) / 2) 0;
-}
-
 header { 
 	border-bottom: 1px solid #E4E5E7;
+}
+
+nav a.live { 
+	cursor: default;
+	text-decoration: underline; 
 }
 
 footer {
@@ -16,15 +17,9 @@ footer {
 	justify-content: center;
 }
 
-nav a.live { 
-	cursor: default;
-	text-decoration: underline; 
-}
-
 .scnd-header {
 	display: flex;
 	width: 100%;
-	align-items: center;
 	justify-content: center;
 }
 
@@ -33,12 +28,14 @@ nav a.live {
     gap: 8px;
     align-items: center;
 }
+
 .logo {
     width: 28px;
     height: 28px;
     object-fit: contain;
     display: block;
 }
+
 .brand h4 {
     margin: 0;
     line-height: 1;
