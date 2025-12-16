@@ -17,15 +17,17 @@
             </label>
             <label for="body">
                Body	
-                <textarea id="body" name="body" placeholder="Write your content…" rows="6" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error"></textarea>
+	</label>
+  <div class="grow-wrap">
+    <textarea name="text" id="text" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 		<small class="error">{{.Form.FieldErrors.body}}</small>
-            </label>
+  </div>
             <label for="published">
                 Publish Now?
-            </label>
                 <input type="checkbox" id="published" name="published" role="switch">
+            </label>
 
-            <button type="submit" class="contrast">
+            <button type="submit">
                 Save Post
             </button>
         </form>
