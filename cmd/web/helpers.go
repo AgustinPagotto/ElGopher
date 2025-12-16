@@ -41,7 +41,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 	buf.WriteTo(w)
 }
 
-func (app *application) renderHtmxPartial(w http.ResponseWriter, r *http.Request, partial string, data string) {
+func (app *application) renderHtmxPartial(w http.ResponseWriter, r *http.Request, partial string, data any) {
 	partialPath := fmt.Sprintf("./ui/html/partials/%s.html", partial)
 	tmpl, err := template.ParseFiles(partialPath)
 	if err != nil {
@@ -74,12 +74,4 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
 		Form: map[string]string{},
 	}
-}
-
-func renderRawTemplate(w http.ResponseWriter, path string, data any) error {
-	ts, err := template.ParseFiles(path)
-	if err != nil {
-		return err
-	}
-	return ts.Execute(w, data)
 }

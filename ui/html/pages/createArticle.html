@@ -3,11 +3,12 @@
 <div class="scnd-header">
 <h1>New Article</h1>
 </div>
+<div id="form-errors">
+</div>
 <form 
     hx-post="/articles/create"
-    hx-target="#errors"
+    hx-target="#form-errors"
     hx-swap="outerHTML"
-    hx-indicator="#errors"
     novalidate
         >
             <label for="title">
@@ -19,7 +20,7 @@
                Body	
 	</label>
   <div class="grow-wrap">
-    <textarea name="text" id="text" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+    <textarea name="text" id="text" placeholder="Enter the post content" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 		<small class="error">{{.Form.FieldErrors.body}}</small>
   </div>
             <label for="published">

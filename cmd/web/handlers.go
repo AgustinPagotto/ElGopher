@@ -53,7 +53,7 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
-		renderRawTemplate(w, "./ui/html/partials/errors.html", data)
+		app.renderHtmxPartial(w, r, "form_errors", data)
 		return
 	}
 	id, err := app.articles.Insert(form.Title, form.Body, form.Publish)
