@@ -10,6 +10,12 @@ header {
 	border-bottom: 1px solid #E4E5E7;
 }
 
+footer {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
 nav a.live { 
 	cursor: default;
 	text-decoration: underline; 
@@ -79,7 +85,7 @@ nav a.live {
   flex-direction: column;
 }
 
-.project-description a {
+.project-description button {
   margin-top: auto;
 }
 
