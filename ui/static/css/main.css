@@ -6,6 +6,11 @@ header {
 	border-bottom: 1px solid #E4E5E7;
 }
 
+header.container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 nav a.live { 
 	cursor: default;
 	text-decoration: underline; 
