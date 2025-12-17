@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"flag"
 	"fmt"
 	"html/template"
@@ -14,7 +13,6 @@ import (
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/jackc/pgx/v5/stdlib"
 )
 
 type application struct {
@@ -29,13 +27,13 @@ func main() {
 	flag.Parse()
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
 	var ctx = context.Background()
-	db, err := openDB(*dsn, ctx)
+	pool, err := openDB(*dsn, ctx)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
 	logger.Info("connected to the database")
-	defer db.Close()
+	defer pool.Close()
 	templateCache, err := newTemplateCache()
 	if err != nil {
 		logger.Error(err.Error())
@@ -45,7 +43,7 @@ func main() {
 	app := &application{
 		logger:        logger,
 		templateCache: templateCache,
-		articles:      &models.ArticleModel{DB: db},
+		articles:      &models.ArticleModel{POOL: pool},
 		formDecoder:   formDecoder,
 	}
 	srv := &http.Server{
@@ -63,7 +61,7 @@ func main() {
 	}
 }
 
-func openDB(dsn string, ctx context.Context) (*sql.DB, error) {
+func openDB(dsn string, ctx context.Context) (*pgxpool.Pool, error) {
 	var err error
 	pool, err := pgxpool.New(ctx, dsn)
 	if err != nil {
@@ -74,6 +72,5 @@ func openDB(dsn string, ctx context.Context) (*sql.DB, error) {
 		return nil, err
 	}
 
-	db := stdlib.OpenDBFromPool(pool)
-	return db, nil
+	return pool, nil
 }

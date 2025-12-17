@@ -1,9 +1,12 @@
 package models
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Article struct {
@@ -18,34 +21,36 @@ type Article struct {
 }
 
 type ArticleModelInterface interface {
-	Insert(title, body string, publish bool) (int, error)
-	Delete(id int) error
-	Get(id int) (Article, error)
-	GetLastFive() ([]Article, error)
+	Insert(ctx context.Context, title, body string, publish bool) (int, error)
+	Delete(ctx context.Context, id int) error
+	Get(ctx context.Context, id int) (Article, error)
+	GetLastFive(ctx context.Context) ([]Article, error)
 }
 
 type ArticleModel struct {
-	DB *sql.DB
+	POOL *pgxpool.Pool
 }
 
-func (am *ArticleModel) Insert(title, body string, publish bool) (int, error) {
-	//Create 2 helper functions, one that generates the SLUG, another the Excerpt
-	sqlQuery := `INSERT INTO articles (title, body, slug, excerpt, created, updated) VALUES (?, ?, UTC_TIMESTAMP());`
-	result, err := am.DB.Exec(sqlQuery, title, body)
+func (am *ArticleModel) Insert(ctx context.Context, title, body string, publish bool) (int, error) {
+	slug := slugifyTitle(title)
+	excerpt := generateExcerpt(body)
+	sqlQuery := `
+	INSERT INTO articles (title, body, slug, excerpt, is_published, created, updated_at) 
+	VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) 
+	RETURNING id;
+	`
+	var id int
+	err := am.POOL.QueryRow(ctx, sqlQuery, title, body, slug, excerpt, publish).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
-	id, err := result.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-	return int(id), nil
+	return id, nil
 }
 
-func (am *ArticleModel) Get(id int) (Article, error) {
+func (am *ArticleModel) Get(ctx context.Context, id int) (Article, error) {
 	var article Article
 	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = ?;`
-	err := am.DB.QueryRow(sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
+	err := am.POOL.QueryRow(context.Background(), sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return Article{}, ErrNoRecord
@@ -56,9 +61,9 @@ func (am *ArticleModel) Get(id int) (Article, error) {
 	return article, nil
 }
 
-func (am *ArticleModel) GetLastFive() ([]Article, error) {
+func (am *ArticleModel) GetLastFive(ctx context.Context) ([]Article, error) {
 	sqlQuery := `SELECT id, title, slug, excerpt, created, updated_at FROM articles WHERE is_published != false ORDER BY created DESC LIMIT 5;`
-	rows, err := am.DB.Query(sqlQuery)
+	rows, err := am.POOL.Query(context.Background(), sqlQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -78,9 +83,9 @@ func (am *ArticleModel) GetLastFive() ([]Article, error) {
 	return articles, nil
 }
 
-func (am *ArticleModel) Delete(id int) error {
+func (am *ArticleModel) Delete(ctx context.Context, id int) error {
 	sqlQuery := `DELETE FROM articles WHERE id = ?;`
-	_, err := am.DB.Exec(sqlQuery, id)
+	_, err := am.POOL.Exec(context.Background(), sqlQuery, id)
 	if err != nil {
 		return err
 	}
