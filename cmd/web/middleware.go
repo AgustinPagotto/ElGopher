@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func commonHeaders(next http.Handler) http.Handler {
@@ -19,6 +21,18 @@ func commonHeaders(next http.Handler) http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-XSS-Protection", "0")
 		w.Header().Set("Server", "Go")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func timeoutMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx, cancel := context.WithTimeout(
+			r.Context(),
+			5*time.Second,
+		)
+		defer cancel()
+		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
 }

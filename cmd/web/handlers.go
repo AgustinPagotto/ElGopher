@@ -56,7 +56,7 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 		app.renderHtmxPartial(w, r, "form_errors", data)
 		return
 	}
-	id, err := app.articles.Insert(form.Title, form.Body, form.Publish)
+	id, err := app.articles.Insert(r.Context(), form.Title, form.Body, form.Publish)
 	if err != nil {
 		app.serverError(w, r, err)
 	}
