@@ -84,26 +84,6 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, fmt.Sprintf("/articles/view/%d", id), http.StatusSeeOther)
 }
 
-func (app *application) articleCreateTitleVerification(w http.ResponseWriter, r *http.Request) {
-	title := r.URL.Query().Get("title")
-	var errMsg string
-	if !validator.NotBlank(title) {
-		w.WriteHeader(http.StatusOK)
-		errMsg = "Title cannot be blank"
-	}
-	app.renderHtmxPartial(w, r, "field_error", errMsg)
-}
-
-func (app *application) articleCreateBodyVerification(w http.ResponseWriter, r *http.Request) {
-	body := r.URL.Query().Get("body")
-	var errMsg string
-	if !validator.NotBlank(body) {
-		w.WriteHeader(http.StatusOK)
-		errMsg = "Body cannot be blank"
-	}
-	app.renderHtmxPartial(w, r, "field_error", errMsg)
-}
-
 func articleView(w http.ResponseWriter, r *http.Request) {
 	_, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
