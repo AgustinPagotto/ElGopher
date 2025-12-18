@@ -11,6 +11,11 @@ header.container {
   padding-bottom: 0;
 }
 
+article header{
+	display: flex;
+	justify-content: space-between;
+}
+
 nav a.live { 
 	cursor: default;
 	text-decoration: underline; 

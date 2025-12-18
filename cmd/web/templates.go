@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 )
@@ -11,6 +12,17 @@ type templateData struct {
 	Articles []models.Article
 	Errors   []string
 	Form     any
+}
+
+func humanDate(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
+	return t.UTC().Format("02 Jan 2006")
+}
+
+var functions = template.FuncMap{
+	"humanDate": humanDate,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
@@ -27,7 +39,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 			"./ui/html/partials/field_error.html",
 			page,
 		}
-		ts, err := template.ParseFiles(files...)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(files...)
 		if err != nil {
 			return nil, err
 		}

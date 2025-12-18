@@ -11,5 +11,12 @@
 <section>
 	<h2> Latest Articles </h2>
 </section>
+
+{{range .Articles}}
+<article class="article">
+	<header class="article-title"><a>{{.Title}}</a> {{humanDate .UpdatedAt}}</header>
+	{{.Excerpt}}
+</article>
+{{end}}
 {{end}}
 
