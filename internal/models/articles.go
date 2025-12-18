@@ -50,7 +50,7 @@ func (am *ArticleModel) Insert(ctx context.Context, title, body string, publish 
 func (am *ArticleModel) Get(ctx context.Context, id int) (Article, error) {
 	var article Article
 	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = ?;`
-	err := am.POOL.QueryRow(context.Background(), sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
+	err := am.POOL.QueryRow(ctx, sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return Article{}, ErrNoRecord
@@ -62,8 +62,8 @@ func (am *ArticleModel) Get(ctx context.Context, id int) (Article, error) {
 }
 
 func (am *ArticleModel) GetLastFive(ctx context.Context) ([]Article, error) {
-	sqlQuery := `SELECT id, title, slug, excerpt, created, updated_at FROM articles WHERE is_published != false ORDER BY created DESC LIMIT 5;`
-	rows, err := am.POOL.Query(context.Background(), sqlQuery)
+	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles ORDER BY updated_at DESC LIMIT 5;`
+	rows, err := am.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (am *ArticleModel) GetLastFive(ctx context.Context) ([]Article, error) {
 	var articles []Article
 	for rows.Next() {
 		var a Article
-		err = rows.Scan(&a.ID, &a.Title, &a.Body, &a.Created)
+		err = rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Excerpt, &a.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
