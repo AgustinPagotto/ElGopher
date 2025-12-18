@@ -39,7 +39,28 @@ func (app *application) about(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (app *application) articleCreate(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, http.StatusOK, "createArticle.html", app.newTemplateData(r))
+	hxTrigger := r.Header.Get("HX-Trigger")
+	app.logger.Info(hxTrigger)
+	switch hxTrigger {
+	case "title":
+		title := r.URL.Query().Get("title")
+		var errMsg string
+		if !validator.NotBlank(title) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Title cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	case "body":
+		body := r.URL.Query().Get("body")
+		var errMsg string
+		if !validator.NotBlank(body) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Body cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	default:
+		app.render(w, r, http.StatusOK, "createArticle.html", app.newTemplateData(r))
+	}
 }
 func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request) {
 	var form articleCreateForm
