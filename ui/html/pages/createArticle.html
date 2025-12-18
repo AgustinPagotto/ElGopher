@@ -13,15 +13,15 @@
         >
             <label for="title">
                 Title
-                <input type="text" id="title" name="title" placeholder="Enter the post title" hx-trigger="blur" hx-get="/articles/create/title" hx-target="next .error">
-		<small class="error">{{.Form.FieldErrors.title}}</small>
+                <input type="text" id="title" name="title" placeholder="Enter the post title" hx-trigger="blur" hx-get="/articles/create" hx-target="next .error">
+		{{template "field_error" .Form.FieldErrors.title}}
             </label>
             <label for="body">
                Body	
 	</label>
   <div class="grow-wrap">
-    <textarea name="body" id="body" placeholder="Enter the post content" hx-trigger="blur" hx-get="/articles/create/body" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
-		<small class="error">{{.Form.FieldErrors.body}}</small>
+    <textarea name="body" id="body" placeholder="Enter the post content" hx-trigger="blur" hx-get="/articles/create" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+		{{template "field_error" .Form.FieldErrors.body}}
   </div>
             <label for="published">
                 Publish Now?
