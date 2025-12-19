@@ -22,8 +22,8 @@
     />
     {{template "field_error" .Form.FieldErrors.title}}
   </label>
-  <label for="body"> Body </label>
-  <div class="grow-wrap">
+  <label for="body">
+    Body
     <textarea
       name="body"
       id="body"
@@ -34,7 +34,7 @@
       onInput="this.parentNode.dataset.replicatedValue = this.value"
     ></textarea>
     {{template "field_error" .Form.FieldErrors.body}}
-  </div>
+  </label>
   <label for="published">
     Publish Now?
     <input type="checkbox" id="published" name="published" role="switch" />

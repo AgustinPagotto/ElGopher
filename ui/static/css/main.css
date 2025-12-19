@@ -111,29 +111,12 @@ footer {
   margin-top: auto;
 }
 
-.grow-wrap {
-  display: grid;
-}
-
-.grow-wrap::after {
-  content: attr(data-replicated-value) " ";
-  white-space: pre-wrap;
-  visibility: hidden;
-}
-
-.grow-wrap > textarea {
-  resize: none;
-  overflow: hidden;
-}
-
-.grow-wrap > textarea,
-.grow-wrap::after {
-  font: inherit;
-  grid-area: 1 / 1 / 2 / 2;
-}
-
 .double-column {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+}
+
+#body {
+  height: 20rem;
 }
