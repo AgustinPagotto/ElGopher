@@ -5,19 +5,68 @@
 
 <div class="container">
   <article class="project">
-    <header>Project Title</header>
-    <div class="project-inner">
-      <img
-        src="https://img.freepik.com/vector-gratis/palabra-hola-tipografia-vectorial_53876-85344.jpg?semt=ais_hybrid&w=740&q=80"
-        alt="Project image"
-      />
-      <div class="project-description">
-        <p>
-          This is a short summary of the project. You can describe what it does,
-          the tech used, or the purpose.
-        </p>
-        <button class="contrast">GitHub →</button>
-      </div>
+    <header>Go Webcrawler</header>
+    <div class="project-description">
+      <p>
+        The first personal learning project that i built in GO, it explores core
+        language fundamentals through the development of a concurrent CLI-based
+        web crawler. The focus of this project was to learn and apply
+        concurrency and the fan-in and fan-out design pattern. In addition to
+        that i applied raw HTML processing, bare SQL queries with SQLite, and
+        effective use of Go’s standard library. The tool supports configurable
+        crawling, indexed storage, and fast text search while comparing multiple
+        concurrency models through benchmarking.
+      </p>
+      <a
+        href="https://github.com/AgustinPagotto/go-webcrawler"
+        target="_blank"
+        class="contrast"
+        >GitHub →</a
+      >
+    </div>
+  </article>
+  <article class="project">
+    <header>Go Interpreter</header>
+    <div class="project-description">
+      <p>
+        A learning-focused Go project built by following Writing an Interpreter
+        in Go by Thorsten Ball, aimed at gaining a deep understanding of
+        interpreter internals. I'm very interested in how Compilers and
+        Interpreters work. It implements a full REPL for the Monkey language,
+        covering tokenization, parsing, AST evaluation, environments, and
+        variable scoping. The project explores language design fundamentals such
+        as first-class functions, data structures, and execution flow through a
+        CLI-driven interface.
+      </p>
+      <a
+        href="https://github.com/AgustinPagotto/go-interpreter"
+        target="_blank"
+        class="contrast"
+        >GitHub →</a
+      >
+    </div>
+  </article>
+  <article class="project">
+    <header>ConfluAI</header>
+    <div class="project-description">
+      <p>
+        A productivity-focused project designed to simplify working with large
+        Confluence documentation sets by generating AI-powered summaries. The
+        project is composed of two main stages: the first uses CQL (Confluence
+        Query Language) to retrieve content, split it into fixed-size text
+        chunks, and generate embeddings via an embedding model, which are then
+        stored in a Qdrant vector database. The second stage processes user
+        queries by scoring vector similarity, selecting the most relevant
+        passages, and generating contextual summaries through an LLM. The entire
+        workflow is implemented in Go using the Cobra library to provide a
+        structured and extensible CLI interface.
+      </p>
+      <a
+        href="https://github.com/AgustinPagotto/confluAI"
+        class="contrast"
+        target="_blank"
+        >GitHub →</a
+      >
     </div>
   </article>
 </div>

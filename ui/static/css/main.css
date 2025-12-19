@@ -11,7 +11,7 @@ header.container {
   padding-bottom: 0;
 }
 
-article header {
+.article {
   display: flex;
   justify-content: space-between;
 }
@@ -92,14 +92,9 @@ footer {
   box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
-.project img {
-  max-width: 300px;
-  height: auto;
-}
-
-.project-inner {
-  display: flex;
-  gap: 1.5rem;
+.project header {
+  font-size: 30px;
+  text-align: center;
 }
 
 .project-description {
@@ -107,8 +102,8 @@ footer {
   flex-direction: column;
 }
 
-.project-description button {
-  margin-top: auto;
+.project-description a {
+  text-align: center;
 }
 
 .double-column {
