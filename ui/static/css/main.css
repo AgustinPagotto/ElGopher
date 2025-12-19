@@ -2,6 +2,10 @@
   font-family: "Roboto Mono", monospace !important;
 }
 
+p {
+  text-align: justify;
+}
+
 header {
   border-bottom: 1px solid #e4e5e7;
 }
