@@ -1,15 +1,14 @@
-{{define "title"}}Articles{{end}}
-{{define "main"}}
+{{define "title"}}Articles{{end}} {{define "main"}}
 <div class="scnd-header">
-<h1>El Gopher Articles</h1>
+  <h1>El Gopher Articles</h1>
 </div>
 <div class="container">
-
-{{range .Articles}}
-<article class="article">
-	<header class="article-title"><a>{{.Title}}</a> {{humanDate .UpdatedAt}}</header>
-	{{.Excerpt}}
-</article>
-{{end}}
-
-{{end}}
+  {{range .Articles}}
+  <article class="article">
+    <header class="article-title">
+      <a>{{.Title}}</a> {{humanDate .UpdatedAt}}
+    </header>
+    {{.Excerpt}}
+  </article>
+  {{end}} {{end}}
+</div>
