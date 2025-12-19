@@ -1,35 +1,45 @@
-{{define "title"}}New Article{{end}}
-{{define "main"}}
+{{define "title"}}New Article{{end}} {{define "main"}}
 <div class="scnd-header">
-<h1>New Article</h1>
+  <h1>New Article</h1>
 </div>
-<div id="form-errors">
-</div>
-<form 
-    hx-post="/articles/create"
-    hx-target="#form-errors"
-    hx-swap="outerHTML"
-    novalidate
-        >
-            <label for="title">
-                Title
-                <input type="text" id="title" name="title" placeholder="Enter the post title" hx-trigger="blur" hx-get="/articles/create" hx-target="next .error">
-		{{template "field_error" .Form.FieldErrors.title}}
-            </label>
-            <label for="body">
-               Body	
-	</label>
+<div id="form-errors"></div>
+<form
+  hx-post="/articles/create"
+  hx-target="#form-errors"
+  hx-swap="outerHTML"
+  novalidate
+>
+  <label for="title">
+    Title
+    <input
+      type="text"
+      id="title"
+      name="title"
+      placeholder="Enter the post title"
+      hx-trigger="blur"
+      hx-get="/articles/create"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.title}}
+  </label>
+  <label for="body"> Body </label>
   <div class="grow-wrap">
-    <textarea name="body" id="body" placeholder="Enter the post content" hx-trigger="blur" hx-get="/articles/create" hx-target="next .error" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
-		{{template "field_error" .Form.FieldErrors.body}}
+    <textarea
+      name="body"
+      id="body"
+      placeholder="Enter the post content"
+      hx-trigger="blur"
+      hx-get="/articles/create"
+      hx-target="next .error"
+      onInput="this.parentNode.dataset.replicatedValue = this.value"
+    ></textarea>
+    {{template "field_error" .Form.FieldErrors.body}}
   </div>
-            <label for="published">
-                Publish Now?
-                <input type="checkbox" id="published" name="published" role="switch">
-            </label>
+  <label for="published">
+    Publish Now?
+    <input type="checkbox" id="published" name="published" role="switch" />
+  </label>
 
-            <button type="submit">
-                Save Post
-            </button>
-        </form>
+  <button type="submit">Save Post</button>
+</form>
 {{end}}
