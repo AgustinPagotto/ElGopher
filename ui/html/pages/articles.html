@@ -6,7 +6,8 @@
   {{range .Articles}}
   <article class="article">
     <header class="article-title">
-      <a>{{.Title}}</a> {{humanDate .UpdatedAt}}
+      <a class="pico-color-azure-600" href="#">{{.Title}}</a> {{humanDate
+      .UpdatedAt}}
     </header>
     {{.Excerpt}}
   </article>

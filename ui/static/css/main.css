@@ -1,5 +1,5 @@
 * {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Roboto Mono", monospace !important;
 }
 
 header {
@@ -130,4 +130,10 @@ footer {
 .grow-wrap::after {
   font: inherit;
   grid-area: 1 / 1 / 2 / 2;
+}
+
+.double-column {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
 }
