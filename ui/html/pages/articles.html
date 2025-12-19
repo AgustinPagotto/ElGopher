@@ -5,34 +5,11 @@
 </div>
 <div class="container">
 
+{{range .Articles}}
 <article class="article">
-<header><a>Understanding Goroutines</a></header>
-A simple explanation of how concurrency works in Go and why goroutines are lightweight and powerful.
+	<header class="article-title"><a>{{.Title}}</a> {{humanDate .UpdatedAt}}</header>
+	{{.Excerpt}}
 </article>
+{{end}}
 
-<article>
-<header><a>HTMX + Go: a perfect match</a></header>
-Learn why HTMX fits so well with Go templates and how to build dynamic pages without a full SPA
-</article>
-
-<article>
-<header><a>HTMX + Go: a perfect match</a></header>
-Learn why HTMX fits so well with Go templates and how to build dynamic pages without a full SPA
-</article>
-
-<article>
-<header><a>HTMX + Go: a perfect match</a></header>
-Learn why HTMX fits so well with Go templates and how to build dynamic pages without a full SPA
-</article>
-
-<article>
-<header><a>HTMX + Go: a perfect match</a></header>
-Learn why HTMX fits so well with Go templates and how to build dynamic pages without a full SPA
-</article>
-
-<article>
-<header><a>HTMX + Go: a perfect match</a></header>
-Learn why HTMX fits so well with Go templates and how to build dynamic pages without a full SPA
-</article>
-</div>
 {{end}}

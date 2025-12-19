@@ -27,6 +27,11 @@ footer {
 	justify-content: center;
 }
 
+.presentation {
+  display: flex;
+  gap: 2rem;
+}
+
 .scnd-header {
 	display: flex;
 	width: 100%;
@@ -44,6 +49,14 @@ footer {
     height: 28px;
     object-fit: contain;
     display: block;
+}
+
+.personal-img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    display: block;
+    border-radius: 25px;
 }
 
 .brand h4 {

@@ -17,13 +17,7 @@ type articleCreateForm struct {
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	articles, err := app.articles.GetLastFive(r.Context())
-	if err != nil {
-		app.serverError(w, r, err)
-	}
-	data := app.newTemplateData(r)
-	data.Articles = articles
-	app.render(w, r, http.StatusOK, "home.html", data)
+	app.render(w, r, http.StatusOK, "home.html", app.newTemplateData(r))
 }
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
 	files := []string{
@@ -99,7 +93,13 @@ func articleView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, http.StatusOK, "articles.html", app.newTemplateData(r))
+	articles, err := app.articles.GetLastFive(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	data := app.newTemplateData(r)
+	data.Articles = articles
+	app.render(w, r, http.StatusOK, "articles.html", data)
 }
 
 func (app *application) viewProjects(w http.ResponseWriter, r *http.Request) {
