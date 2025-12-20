@@ -3,12 +3,7 @@
   <h1>New Article</h1>
 </div>
 <div id="form-errors"></div>
-<form
-  hx-post="/articles/create"
-  hx-target="#form-errors"
-  hx-swap="outerHTML"
-  novalidate
->
+<form action="/article/create" method="post" novalidate>
   <label for="title">
     Title
     <input
@@ -17,7 +12,7 @@
       name="title"
       placeholder="Enter the post title"
       hx-trigger="blur"
-      hx-get="/articles/create"
+      hx-get="/article/create"
       hx-target="next .error"
     />
     {{template "field_error" .Form.FieldErrors.title}}
@@ -29,7 +24,7 @@
       id="body"
       placeholder="Enter the post content"
       hx-trigger="blur"
-      hx-get="/articles/create"
+      hx-get="/article/create"
       hx-target="next .error"
       onInput="this.parentNode.dataset.replicatedValue = this.value"
     ></textarea>

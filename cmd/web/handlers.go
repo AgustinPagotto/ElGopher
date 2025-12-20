@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -78,11 +77,12 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 		app.renderHtmxPartial(w, r, "form_errors", data)
 		return
 	}
-	id, err := app.articles.Insert(r.Context(), form.Title, form.Body, form.Publish)
+	_, err = app.articles.Insert(r.Context(), form.Title, form.Body, form.Publish)
 	if err != nil {
 		app.serverError(w, r, err)
 	}
-	http.Redirect(w, r, fmt.Sprintf("/article/view/%d", id), http.StatusSeeOther)
+	w.Header().Set("HX-Redirect", "/articles")
+	http.Redirect(w, r, "/articles", http.StatusSeeOther)
 }
 
 func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
