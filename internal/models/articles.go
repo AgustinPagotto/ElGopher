@@ -2,10 +2,10 @@ package models
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -24,6 +24,7 @@ type ArticleModelInterface interface {
 	Insert(ctx context.Context, title, body string, publish bool) (int, error)
 	Delete(ctx context.Context, id int) error
 	Get(ctx context.Context, id int) (Article, error)
+	GetWithSlug(ctx context.Context, slug string) (Article, error)
 	GetLastFive(ctx context.Context) ([]Article, error)
 }
 
@@ -49,10 +50,24 @@ func (am *ArticleModel) Insert(ctx context.Context, title, body string, publish 
 
 func (am *ArticleModel) Get(ctx context.Context, id int) (Article, error) {
 	var article Article
-	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = ?;`
+	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = $1;`
 	err := am.POOL.QueryRow(ctx, sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return Article{}, ErrNoRecord
+		} else {
+			return Article{}, err
+		}
+	}
+	return article, nil
+}
+
+func (am *ArticleModel) GetWithSlug(ctx context.Context, slug string) (Article, error) {
+	var article Article
+	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE slug = $1;`
+	err := am.POOL.QueryRow(ctx, sqlQuery, slug).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created, &article.UpdatedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return Article{}, ErrNoRecord
 		} else {
 			return Article{}, err

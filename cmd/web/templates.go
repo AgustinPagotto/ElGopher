@@ -10,6 +10,7 @@ import (
 
 type templateData struct {
 	Articles []models.Article
+	Article  models.Article
 	Errors   []string
 	Form     any
 }
