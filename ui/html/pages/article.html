@@ -1,0 +1,10 @@
+{{define "title"}}{{.Title}}{{end}} {{define "main"}}
+<div class="scnd-header">
+  <h1>{{.Title}}</h1>
+</div>
+<div class="container">
+  <p>{{.Body}}</p>
+  <p>Published on: {{humanDate .Created}}</p>
+  <p>Last Edit on: {{humanDate .UpdatedAt}}</p>
+</div>
+{{end}}
