@@ -5,8 +5,10 @@
 <div class="container">
   {{range .Articles}}
   <article class="article">
-    <a class="pico-color-azure-600" href="#">{{.Title}}</a> {{humanDate
-    .UpdatedAt}}
+    <a class="pico-color-azure-500" href="/article/view/{{.Slug}}"
+      >{{.Title}}</a
+    >
+    {{humanDate .UpdatedAt}}
   </article>
   {{end}} {{end}}
 </div>
