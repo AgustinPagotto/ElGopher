@@ -1,11 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
-	"strconv"
 
+	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/AgustinPagotto/ElGopher/internal/validator"
 )
 
@@ -81,15 +82,28 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		app.serverError(w, r, err)
 	}
-	http.Redirect(w, r, fmt.Sprintf("/articles/view/%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/article/view/%d", id), http.StatusSeeOther)
 }
 
-func articleView(w http.ResponseWriter, r *http.Request) {
-	_, err := strconv.Atoi(r.PathValue("id"))
-	if err != nil {
+func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
+	slug := r.PathValue("slug")
+	if slug == "" {
 		http.NotFound(w, r)
+		return
 	}
-	w.Write([]byte("articleView"))
+	data := app.newTemplateData(r)
+	article, err := app.articles.GetWithSlug(r.Context(), slug)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			http.NotFound(w, r)
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+	app.logger.Info("here is the issue", "article", article)
+	data.Article = article
+	app.render(w, r, http.StatusOK, "article.html", data)
 }
 
 func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
