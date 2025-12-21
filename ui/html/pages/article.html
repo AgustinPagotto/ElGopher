@@ -1,10 +1,7 @@
 {{define "title"}}{{.Article.Title}}{{end}} {{define "main"}}
-<div class="scnd-header">
+<div class="article-header">
   <h1>{{.Article.Title}}</h1>
+  <h6>Published on: {{humanDate .Article.Created}}</h6>
 </div>
-<div class="container">
-  <p>{{.Article.Body}}</p>
-  <p>Published on: {{humanDate .Article.Created}}</p>
-  <p>Last Edit on: {{humanDate .Article.UpdatedAt}}</p>
-</div>
+<div class="container">{{.Article.Body}}</div>
 {{end}}
