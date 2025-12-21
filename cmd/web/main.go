@@ -13,13 +13,16 @@ import (
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 )
 
 type application struct {
-	logger        *slog.Logger
-	templateCache map[string]*template.Template
-	articles      models.ArticleModelInterface
-	formDecoder   *form.Decoder
+	logger         *slog.Logger
+	templateCache  map[string]*template.Template
+	articles       models.ArticleModelInterface
+	formDecoder    *form.Decoder
+	markdownParser goldmark.Markdown
 }
 
 func main() {
@@ -45,6 +48,13 @@ func main() {
 		templateCache: templateCache,
 		articles:      &models.ArticleModel{POOL: pool},
 		formDecoder:   formDecoder,
+		markdownParser: goldmark.New(
+			goldmark.WithExtensions(
+				highlighting.NewHighlighting(
+					highlighting.WithStyle("nordic"),
+				),
+			),
+		),
 	}
 	srv := &http.Server{
 		Addr:         ":4000",

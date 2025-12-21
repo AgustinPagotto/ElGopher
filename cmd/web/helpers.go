@@ -75,3 +75,11 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		Form: map[string]string{},
 	}
 }
+
+func (app *application) MarkToHTML(markdown string) (string, error) {
+	var buf bytes.Buffer
+	if err := app.markdownParser.Convert([]byte(markdown), &buf); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
+}

@@ -101,8 +101,13 @@ func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	app.logger.Info("here is the issue", "article", article)
+	htmlBody, err := app.MarkToHTML(article.Body)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 	data.Article = article
+	data.ArticleBody = template.HTML(htmlBody)
 	app.render(w, r, http.StatusOK, "article.html", data)
 }
 
