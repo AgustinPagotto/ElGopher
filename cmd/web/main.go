@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
+	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/yuin/goldmark"
@@ -21,8 +22,10 @@ type application struct {
 	logger         *slog.Logger
 	templateCache  map[string]*template.Template
 	articles       models.ArticleModelInterface
-	formDecoder    *form.Decoder
+	users          models.UserModelInterface
 	markdownParser goldmark.Markdown
+	formDecoder    *form.Decoder
+	session        *scs.SessionManager
 }
 
 func main() {
@@ -47,11 +50,12 @@ func main() {
 		logger:        logger,
 		templateCache: templateCache,
 		articles:      &models.ArticleModel{POOL: pool},
+		users:         &models.UserModel{POOL: pool},
 		formDecoder:   formDecoder,
 		markdownParser: goldmark.New(
 			goldmark.WithExtensions(
 				highlighting.NewHighlighting(
-					highlighting.WithStyle("nordic"),
+					highlighting.WithStyle("solarized-dark"),
 				),
 			),
 		),
