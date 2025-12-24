@@ -124,3 +124,65 @@ func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
 func (app *application) viewProjects(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "projects.html", app.newTemplateData(r))
 }
+
+func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+	hxTrigger := r.Header.Get("HX-Trigger")
+	app.logger.Info(hxTrigger)
+	switch hxTrigger {
+	case "name":
+		name := r.URL.Query().Get("name")
+		var errMsg string
+		if !validator.NotBlank(name) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Name cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	case "email":
+		email := r.URL.Query().Get("email")
+		var errMsg string
+		if !validator.NotBlank(email) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Email cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	case "password":
+		password := r.URL.Query().Get("password")
+		var errMsg string
+		if !validator.NotBlank(password) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Password cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	default:
+		app.render(w, r, http.StatusOK, "signup.html", app.newTemplateData(r))
+	}
+}
+
+func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+}
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+	hxTrigger := r.Header.Get("HX-Trigger")
+	app.logger.Info(hxTrigger)
+	switch hxTrigger {
+	case "email":
+		email := r.URL.Query().Get("email")
+		var errMsg string
+		if !validator.NotBlank(email) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Email cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	case "password":
+		password := r.URL.Query().Get("password")
+		var errMsg string
+		if !validator.NotBlank(password) {
+			w.WriteHeader(http.StatusOK)
+			errMsg = "Password cannot be blank"
+		}
+		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	default:
+		app.render(w, r, http.StatusOK, "login.html", app.newTemplateData(r))
+	}
+}
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+}

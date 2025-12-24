@@ -1,0 +1,34 @@
+{{define "title"}}Login{{end}} {{define "main"}}
+<div class="scnd-header">
+  <h1>Login</h1>
+</div>
+<div id="form-errors"></div>
+<form action="/user/login" method="POST" novalidate>
+  <label class="email">
+    Email
+    <input
+      type="text"
+      id="email"
+      name="email"
+      placeholder="Enter the Email"
+      hx-trigger="blur"
+      hx-get="/user/login"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.email}}
+  </label>
+  <label class="password">
+    Password
+    <input
+      type="password"
+      id="password"
+      name="password"
+      hx-trigger="blur"
+      hx-get="/user/login"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.email}}
+  </label>
+  <button type="submit">Log In</button>
+</form>
+{{end}}

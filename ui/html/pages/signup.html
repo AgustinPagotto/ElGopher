@@ -1,0 +1,47 @@
+{{define "title"}}Signup{{end}} {{define "main"}}
+<div class="scnd-header">
+  <h1>SignUp</h1>
+</div>
+<div id="form-errors"></div>
+<form action="/user/signup" method="POST" novalidate>
+  <label class="name">
+    Name
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Enter the name"
+      hx-trigger="blur"
+      hx-get="/user/signup"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.name}}
+  </label>
+  <label class="email">
+    Email
+    <input
+      type="text"
+      id="email"
+      name="email"
+      placeholder="Enter the Email"
+      hx-trigger="blur"
+      hx-get="/user/signup"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.email}}
+  </label>
+  <label class="password">
+    Password
+    <input
+      type="password"
+      id="password"
+      name="password"
+      hx-trigger="blur"
+      hx-get="/user/signup"
+      hx-target="next .error"
+    />
+    {{template "field_error" .Form.FieldErrors.email}}
+  </label>
+  <button type="submit">SignUp</button>
+</form>
+{{end}}
