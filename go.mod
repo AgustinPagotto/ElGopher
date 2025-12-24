@@ -3,6 +3,7 @@ module github.com/AgustinPagotto/ElGopher
 go 1.25.4
 
 require (
+	github.com/alexedwards/scs/pgxstore v0.0.0-20251002162104-209de6e426de
 	github.com/alexedwards/scs/v2 v2.9.0
 	github.com/go-playground/form/v4 v4.3.0
 	github.com/jackc/pgx/v5 v5.7.6

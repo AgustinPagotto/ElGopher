@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
+	"github.com/alexedwards/scs/pgxstore"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -25,7 +26,7 @@ type application struct {
 	users          models.UserModelInterface
 	markdownParser goldmark.Markdown
 	formDecoder    *form.Decoder
-	session        *scs.SessionManager
+	sessionManager *scs.SessionManager
 }
 
 func main() {
@@ -46,12 +47,17 @@ func main() {
 		os.Exit(1)
 	}
 	formDecoder := form.NewDecoder()
+	sessionManager := scs.New()
+	sessionManager.Store = pgxstore.New(pool)
+	sessionManager.Lifetime = 12 * time.Hour
+	sessionManager.Cookie.Secure = true
 	app := &application{
-		logger:        logger,
-		templateCache: templateCache,
-		articles:      &models.ArticleModel{POOL: pool},
-		users:         &models.UserModel{POOL: pool},
-		formDecoder:   formDecoder,
+		logger:         logger,
+		templateCache:  templateCache,
+		articles:       &models.ArticleModel{POOL: pool},
+		users:          &models.UserModel{POOL: pool},
+		formDecoder:    formDecoder,
+		sessionManager: sessionManager,
 		markdownParser: goldmark.New(
 			goldmark.WithExtensions(
 				highlighting.NewHighlighting(
