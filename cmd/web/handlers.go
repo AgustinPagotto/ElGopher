@@ -16,6 +16,19 @@ type articleCreateForm struct {
 	validator.Validator `form:"-"`
 }
 
+type signUpForm struct {
+	Name                string `form:"name"`
+	Email               string `form:"email"`
+	Password            string `form:"password"`
+	validator.Validator `form:"-"`
+}
+
+type logInForm struct {
+	Email               string `form:"email"`
+	Password            string `form:"password"`
+	validator.Validator `form:"-"`
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "home.html", app.newTemplateData(r))
 }
@@ -140,7 +153,7 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 	case "email":
 		email := r.URL.Query().Get("email")
 		var errMsg string
-		if !validator.NotBlank(email) {
+		if !validator.EmailValidator(email) {
 			w.WriteHeader(http.StatusOK)
 			errMsg = "Email cannot be blank"
 		}
@@ -148,7 +161,7 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 	case "password":
 		password := r.URL.Query().Get("password")
 		var errMsg string
-		if !validator.NotBlank(password) {
+		if !validator.PasswordValidator(password) {
 			w.WriteHeader(http.StatusOK)
 			errMsg = "Password cannot be blank"
 		}
@@ -159,6 +172,28 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+	var form signUpForm
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w)
+		return
+	}
+	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+	form.CheckField(validator.Matches(form.Email, validator.EmailRX), "email", "This field must be a valid email address")
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.renderHtmxPartial(w, r, "form_errors", data)
+		return
+	}
+	err = app.users.Insert(r.Context(), form.Name, form.Email, form.Password)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	w.Header().Set("HX-Redirect", "/user/login")
+	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	hxTrigger := r.Header.Get("HX-Trigger")
@@ -167,15 +202,15 @@ func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	case "email":
 		email := r.URL.Query().Get("email")
 		var errMsg string
-		if !validator.NotBlank(email) {
+		if !validator.EmailValidator(email) {
 			w.WriteHeader(http.StatusOK)
-			errMsg = "Email cannot be blank"
+			errMsg = "Email contain errors"
 		}
 		app.renderHtmxPartial(w, r, "field_error", errMsg)
 	case "password":
 		password := r.URL.Query().Get("password")
 		var errMsg string
-		if !validator.NotBlank(password) {
+		if !validator.PasswordValidator(password) {
 			w.WriteHeader(http.StatusOK)
 			errMsg = "Password cannot be blank"
 		}
