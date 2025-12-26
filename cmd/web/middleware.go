@@ -61,3 +61,35 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (a *application) requireAuthentiation(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !a.isAuthenticated(r) {
+			a.sessionManager.Put(r.Context(), "redirectPathAfterLogin", r.URL.Path)
+			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+			return
+		}
+		w.Header().Add("Cache-Control", "no-store")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (a *application) authenticated(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id := a.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+		if id == 0 {
+			next.ServeHTTP(w, r)
+			return
+		}
+		exists, err := a.users.Exists(r.Context(), id)
+		if err != nil {
+			a.serverError(w, r, err)
+			return
+		}
+		if exists {
+			ctx := context.WithValue(r.Context(), isAuthenticatedContextKey, true)
+			r = r.WithContext(ctx)
+		}
+		next.ServeHTTP(w, r)
+	})
+}

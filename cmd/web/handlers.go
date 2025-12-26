@@ -155,7 +155,7 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 		var errMsg string
 		if !validator.EmailValidator(email) {
 			w.WriteHeader(http.StatusOK)
-			errMsg = "Email cannot be blank"
+			errMsg = "Email contains errors"
 		}
 		app.renderHtmxPartial(w, r, "field_error", errMsg)
 	case "password":
@@ -163,7 +163,7 @@ func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
 		var errMsg string
 		if !validator.PasswordValidator(password) {
 			w.WriteHeader(http.StatusOK)
-			errMsg = "Password cannot be blank"
+			errMsg = "Password cannot be blank or less than 8 characters"
 		}
 		app.renderHtmxPartial(w, r, "field_error", errMsg)
 	default:
@@ -220,4 +220,44 @@ func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+	var form logInForm
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w)
+		return
+	}
+	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
+	form.CheckField(validator.Matches(form.Email, validator.EmailRX), "email", "This field must be a valid email address")
+	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+	form.CheckField(validator.MinChars(form.Password, 8), "password", "This field must be at least 8 characters long")
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.renderHtmxPartial(w, r, "form_errors", data)
+		return
+	}
+	id, err := app.users.Authenticate(r.Context(), form.Email, form.Password)
+	if err != nil {
+		if errors.Is(err, models.ErrInvalidCredentials) {
+			form.AddNonFieldError("Email or Password is incorrect")
+			data := app.newTemplateData(r)
+			data.Form = form
+			app.renderHtmxPartial(w, r, "form_errors", data)
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+	err = app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
+	path := app.sessionManager.PopString(r.Context(), "redirectPathAfterLogin")
+	if path != "" {
+		w.Header().Set("HX-Redirect", path)
+		http.Redirect(w, r, path, http.StatusSeeOther)
+	}
+	w.Header().Set("HX-Redirect", "/article/create")
+	http.Redirect(w, r, "/article/create", http.StatusSeeOther)
 }

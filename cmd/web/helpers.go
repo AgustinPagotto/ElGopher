@@ -72,7 +72,8 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 
 func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
-		Form: map[string]string{},
+		Form:            map[string]string{},
+		IsAuthenticated: app.isAuthenticated(r),
 	}
 }
 
@@ -82,4 +83,12 @@ func (app *application) MarkToHTML(markdown string) (string, error) {
 		return "", err
 	}
 	return buf.String(), nil
+}
+
+func (a *application) isAuthenticated(r *http.Request) bool {
+	isAuthenticated, ok := r.Context().Value(isAuthenticatedContextKey).(bool)
+	if !ok {
+		return false
+	}
+	return isAuthenticated
 }

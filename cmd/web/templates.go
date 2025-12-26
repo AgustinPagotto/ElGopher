@@ -9,11 +9,12 @@ import (
 )
 
 type templateData struct {
-	Articles    []models.Article
-	Article     models.Article
-	ArticleBody template.HTML
-	Errors      []string
-	Form        any
+	Articles        []models.Article
+	Article         models.Article
+	ArticleBody     template.HTML
+	Errors          []string
+	Form            any
+	IsAuthenticated bool
 }
 
 func humanDate(t time.Time) string {
