@@ -9,6 +9,12 @@
     <li><a href="/articles">Articles</a></li>
     <li><a href="/projects">Projects</a></li>
     <li><a href="/about">About</a></li>
+    {{if .IsAuthenticated}}
+    <li><a href="/user/logout">Logout</a></li>
+    {{else}}
+    <li><a href="/user/login">Login</a></li>
+    <li><a href="/user/signup">Sign Up</a></li>
+    {{end}}
   </ul>
 </nav>
 {{end}}
