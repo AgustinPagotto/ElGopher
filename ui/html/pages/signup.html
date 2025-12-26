@@ -3,7 +3,12 @@
   <h1>SignUp</h1>
 </div>
 <div id="form-errors"></div>
-<form action="/user/signup" method="POST" novalidate>
+<form
+  hx-post="/user/signup"
+  hx-target="#form-errors"
+  hx-swap="innerHTML"
+  novalidate
+>
   <label class="name">
     Name
     <input

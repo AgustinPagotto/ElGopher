@@ -3,7 +3,12 @@
   <h1>New Article</h1>
 </div>
 <div id="form-errors"></div>
-<form action="/article/create" method="post" novalidate>
+<form
+  hx-post="/article/create"
+  hx-target="#form-errors"
+  hx-swap="innerHTML"
+  novalidate
+>
   <label for="title">
     Title
     <input
