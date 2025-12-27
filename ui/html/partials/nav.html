@@ -9,14 +9,20 @@
     <li><a href="/articles">Articles</a></li>
     <li><a href="/projects">Projects</a></li>
     <li><a href="/about">About</a></li>
-    {{if .IsSpanish}}
-    <li><a href="/pref/lng">ES</a></li>
+
+    <li class="lang-switch">
+      <a href="/pref/lng" class="{{if .IsSpanish}}active{{end}}">ES</a>
+      <span>/</span>
+      <a href="/pref/lng" class="{{if not .IsSpanish}}active{{end}}">EN</a>
+    </li>
+    {{if not .IsLightTheme}}
+    <li>
+      <a href="/pref/thm"> 🌙 </a>
+    </li>
     {{else}}
-    <li><a href="/pref/lng">EN</a></li>
-    {{end}} {{if .IsLightTheme}}
-    <li><a href="/pref/thm">W</a></li>
-    {{else}}
-    <li><a href="/pref/thm">B</a></li>
+    <li>
+      <a href="/pref/thm"> ☀️</a>
+    </li>
     {{end}}
   </ul>
 </nav>
