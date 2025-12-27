@@ -9,6 +9,12 @@
     <li><a href="/articles">Articles</a></li>
     <li><a href="/projects">Projects</a></li>
     <li><a href="/about">About</a></li>
+    {{if .IsSpanish}}
+    <li><a href="/pref/lng">ES</a></li>
+    {{else}}
+    <li><a href="/pref/lng">EN</a></li>
+    {{end}}
+    <li><button hx-get="/pref/thm">W</button></li>
   </ul>
 </nav>
 {{end}}

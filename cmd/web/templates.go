@@ -15,6 +15,7 @@ type templateData struct {
 	Errors          []string
 	Form            any
 	IsAuthenticated bool
+	IsSpanish       bool
 }
 
 func humanDate(t time.Time) string {
