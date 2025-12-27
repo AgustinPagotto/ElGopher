@@ -94,19 +94,12 @@ func (a *application) authenticated(next http.Handler) http.Handler {
 	})
 }
 
-func (a *application) language(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
-		ctx := context.WithValue(r.Context(), isSpanishContextKey, lang)
-		r = r.WithContext(ctx)
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (a *application) theme(next http.Handler) http.Handler {
+func (a *application) preferences(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		theme := a.sessionManager.GetBool(r.Context(), "isLightTheme")
+		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
 		ctx := context.WithValue(r.Context(), isLightThemeContextKey, theme)
+		ctx = context.WithValue(ctx, isSpanishContextKey, lang)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
