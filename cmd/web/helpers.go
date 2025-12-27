@@ -74,6 +74,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
 		Form:            map[string]string{},
 		IsAuthenticated: app.isAuthenticated(r),
+		IsSpanish:       app.isSpanish(r),
 	}
 }
 
@@ -91,4 +92,12 @@ func (a *application) isAuthenticated(r *http.Request) bool {
 		return false
 	}
 	return isAuthenticated
+}
+
+func (a *application) isSpanish(r *http.Request) bool {
+	isSpanish, ok := r.Context().Value(isSpanishContextKey).(bool)
+	if !ok {
+		return false
+	}
+	return isSpanish
 }

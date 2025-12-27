@@ -1,0 +1,7 @@
+{{define "language_button"}}
+<div id="lang-toggle">
+  <button hx-get="/prefs/lang">
+    {{if .Preferences.Spanish}}ES{{else}}EN{{end}}
+  </button>
+</div>
+{{end}}

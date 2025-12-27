@@ -93,3 +93,12 @@ func (a *application) authenticated(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (a *application) language(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
+		ctx := context.WithValue(r.Context(), isSpanishContextKey, lang)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
