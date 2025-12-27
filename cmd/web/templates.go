@@ -16,6 +16,7 @@ type templateData struct {
 	Form            any
 	IsAuthenticated bool
 	IsSpanish       bool
+	IsLightTheme    bool
 }
 
 func humanDate(t time.Time) string {

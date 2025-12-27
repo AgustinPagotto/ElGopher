@@ -102,3 +102,12 @@ func (a *application) language(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (a *application) theme(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		theme := a.sessionManager.GetBool(r.Context(), "isLightTheme")
+		ctx := context.WithValue(r.Context(), isLightThemeContextKey, theme)
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}

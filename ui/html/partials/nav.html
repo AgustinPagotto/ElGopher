@@ -13,8 +13,11 @@
     <li><a href="/pref/lng">ES</a></li>
     {{else}}
     <li><a href="/pref/lng">EN</a></li>
+    {{end}} {{if .IsLightTheme}}
+    <li><a href="/pref/thm">W</a></li>
+    {{else}}
+    <li><a href="/pref/thm">B</a></li>
     {{end}}
-    <li><button hx-get="/pref/thm">W</button></li>
   </ul>
 </nav>
 {{end}}

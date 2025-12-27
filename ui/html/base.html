@@ -1,6 +1,6 @@
 {{define "base"}}
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="{{if .IsLightTheme}}light{{else}}dark{{end}}">
   <head>
     <meta charset="UTF-8" />
     <title>{{template "title" .}}</title>
