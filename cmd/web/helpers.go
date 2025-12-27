@@ -75,6 +75,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		Form:            map[string]string{},
 		IsAuthenticated: app.isAuthenticated(r),
 		IsSpanish:       app.isSpanish(r),
+		IsLightTheme:    app.isLightTheme(r),
 	}
 }
 
@@ -100,4 +101,12 @@ func (a *application) isSpanish(r *http.Request) bool {
 		return false
 	}
 	return isSpanish
+}
+
+func (a *application) isLightTheme(r *http.Request) bool {
+	isLightTheme, ok := r.Context().Value(isLightThemeContextKey).(bool)
+	if !ok {
+		return false
+	}
+	return isLightTheme
 }

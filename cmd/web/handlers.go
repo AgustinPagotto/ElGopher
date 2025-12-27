@@ -261,6 +261,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Redirect", "/article/create")
 	http.Redirect(w, r, "/article/create", http.StatusSeeOther)
 }
+
 func (app *application) setLanguage(w http.ResponseWriter, r *http.Request) {
 	err := app.sessionManager.RenewToken(r.Context())
 	if err != nil {
@@ -268,6 +269,17 @@ func (app *application) setLanguage(w http.ResponseWriter, r *http.Request) {
 	}
 	lang := app.sessionManager.PopBool(r.Context(), "isSpanish")
 	app.sessionManager.Put(r.Context(), "isSpanish", !lang)
-	w.Header().Set("HX-Redirect", "/")
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	w.Header().Set("HX-Redirect", r.Referer())
+	w.WriteHeader(http.StatusOK)
+}
+
+func (app *application) setTheme(w http.ResponseWriter, r *http.Request) {
+	err := app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	theme := app.sessionManager.PopBool(r.Context(), "isLightTheme")
+	app.sessionManager.Put(r.Context(), "isLightTheme", !theme)
+	w.Header().Set("HX-Redirect", r.Referer())
+	w.WriteHeader(http.StatusOK)
 }
