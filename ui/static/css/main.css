@@ -81,14 +81,6 @@ footer {
   margin-top: 10px;
 }
 
-.contact-item svg {
-  transition: opacity 0.2s ease;
-}
-
-.contact-item:hover svg {
-  opacity: 0.7;
-}
-
 .article {
   transition:
     transform 0.15s ease,
