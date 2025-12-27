@@ -123,3 +123,14 @@ footer {
 #body {
   height: 20rem;
 }
+
+.lang-switch a {
+  opacity: 0.5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.lang-switch a.active {
+  opacity: 1;
+  text-decoration: underline;
+}
