@@ -33,23 +33,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "home.html", app.newTemplateData(r))
 }
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
-	files := []string{
-		"./ui/html/base.html",
-		"./ui/html/partials/nav.html",
-		"./ui/html/pages/about.html",
-	}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	app.render(w, r, http.StatusOK, "about.html", app.newTemplateData(r))
 }
 func (app *application) articleCreate(w http.ResponseWriter, r *http.Request) {
 	hxTrigger := r.Header.Get("HX-Trigger")
