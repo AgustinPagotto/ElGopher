@@ -2,7 +2,7 @@
 <div class="scnd-header">
   <h1>Login</h1>
 </div>
-<div id="form-errors"></div>
+{{template "form_error" .Form.FormErrors}}
 <form
   hx-post="/user/login"
   hx-target="#form-errors"

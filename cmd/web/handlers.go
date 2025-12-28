@@ -71,7 +71,7 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
-		app.renderHtmxPartial(w, r, "form_errors", data)
+		app.renderHtmxPartial(w, r, "form_error", data)
 		return
 	}
 	_, err = app.articles.Insert(r.Context(), form.Title, form.Body, form.Publish)
@@ -169,7 +169,7 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
-		app.renderHtmxPartial(w, r, "form_errors", data)
+		app.renderHtmxPartial(w, r, "form_error", data)
 		return
 	}
 	err = app.users.Insert(r.Context(), form.Name, form.Email, form.Password)
@@ -216,9 +216,10 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
 	form.CheckField(validator.MinChars(form.Password, 8), "password", "This field must be at least 8 characters long")
 	if !form.Valid() {
+		app.logger.Info("here is the field error", "error", err)
 		data := app.newTemplateData(r)
 		data.Form = form
-		app.renderHtmxPartial(w, r, "form_errors", data)
+		app.renderHtmxPartial(w, r, "form_error", data)
 		return
 	}
 	id, err := app.users.Authenticate(r.Context(), form.Email, form.Password)
@@ -228,7 +229,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 			form.AddNonFieldError("Email or Password is incorrect")
 			data := app.newTemplateData(r)
 			data.Form = form
-			app.renderHtmxPartial(w, r, "form_errors", data)
+			app.renderHtmxPartial(w, r, "form_error", data)
 		} else {
 			app.serverError(w, r, err)
 		}
