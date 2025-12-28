@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
+	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/go-playground/form/v4"
 )
 
@@ -76,6 +77,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		IsAuthenticated: app.isAuthenticated(r),
 		IsSpanish:       app.isSpanish(r),
 		IsLightTheme:    app.isLightTheme(r),
+		Translator:      app.getTranslator(r),
 	}
 }
 
@@ -109,4 +111,12 @@ func (a *application) isLightTheme(r *http.Request) bool {
 		return false
 	}
 	return isLightTheme
+}
+
+func (a *application) getTranslator(r *http.Request) i18n.Translator {
+	isSpanish, ok := r.Context().Value(isSpanishContextKey).(bool)
+	if !ok || !isSpanish {
+		return i18n.Translator{Messages: i18n.EN}
+	}
+	return i18n.Translator{Messages: i18n.ES}
 }

@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 )
 
@@ -17,6 +18,7 @@ type templateData struct {
 	IsAuthenticated bool
 	IsSpanish       bool
 	IsLightTheme    bool
+	Translator      i18n.Translator
 }
 
 func humanDate(t time.Time) string {
@@ -26,8 +28,13 @@ func humanDate(t time.Time) string {
 	return t.UTC().Format("02 Jan 2006")
 }
 
+func getTranslation(t templateData, key string) string {
+	return t.Translator.T(key)
+}
+
 var functions = template.FuncMap{
-	"humanDate": humanDate,
+	"humanDate":      humanDate,
+	"getTranslation": getTranslation,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
