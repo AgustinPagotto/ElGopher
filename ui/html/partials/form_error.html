@@ -1,0 +1,16 @@
+{{define "form_error"}}
+<div id="form-errors">
+  {{if .Form.FieldErrors}}
+  <article role="alert" class="pico-background-red-600">
+    {{range $field, $err := .Form.FieldErrors}}
+    <strong>{{ $field }}:</strong> {{ $err }} <br />{{end}}
+  </article>
+  {{end}} {{if .Form.NonFieldErrors}}
+  <article role="alert" class="pico-background-red-600">
+    {{range .Form.NonFieldErrors}}
+    <strong>{{ . }}</strong>
+    {{end}}
+  </article>
+  {{end}}
+</div>
+{{end}}
