@@ -5,6 +5,5 @@ var EN = map[string]string{
 	"nav.articles": "Articles",
 	"nav.projects": "Projects",
 	"nav.about":    "About",
-	"login.title":  "Login",
-	"login.submit": "Log in",
+	"nav.logout":   "Logout",
 }
