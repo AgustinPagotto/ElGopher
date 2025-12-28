@@ -36,14 +36,18 @@ func (um *UserModel) Insert(ctx context.Context, name, email, password string) e
 	if err != nil {
 		return err
 	}
-	sqlQuery := `INSERT INTO users (name, email, hashed_password, created) 
-		VALUES ($1,$2,$3, UTC_TIMESTAMP())`
+	sqlQuery := `INSERT INTO users (name, email, hashed_password) 
+		VALUES ($1,$2,$3)`
 	_, err = um.POOL.Exec(ctx, sqlQuery, name, email, string(hashedPassword))
 
 	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		if pgErr.Code == "23505" && pgErr.ConstraintName == "users_uc_email" {
-			return ErrDuplicateEmail
+	if err != nil {
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == "23505" && pgErr.ConstraintName == "users_uc_email" {
+				return ErrDuplicateEmail
+			}
+		} else {
+			return err
 		}
 	}
 	return nil
@@ -69,7 +73,6 @@ func (um *UserModel) Authenticate(ctx context.Context, email, password string) (
 			return 0, err
 		}
 	}
-
 	return id, nil
 }
 func (um *UserModel) Exists(ctx context.Context, id int) (bool, error) {
