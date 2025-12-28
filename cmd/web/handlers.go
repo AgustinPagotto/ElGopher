@@ -79,7 +79,7 @@ func (app *application) articleCreatePost(w http.ResponseWriter, r *http.Request
 		app.serverError(w, r, err)
 	}
 	w.Header().Set("HX-Redirect", "/articles")
-	http.Redirect(w, r, "/articles", http.StatusSeeOther)
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
@@ -177,8 +177,9 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 	}
 	w.Header().Set("HX-Redirect", "/user/login")
-	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+	w.WriteHeader(http.StatusSeeOther)
 }
+
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	hxTrigger := r.Header.Get("HX-Trigger")
 	app.logger.Info(hxTrigger)
@@ -222,6 +223,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 	id, err := app.users.Authenticate(r.Context(), form.Email, form.Password)
 	if err != nil {
+		app.logger.Info("here is the error", "error", err)
 		if errors.Is(err, models.ErrInvalidCredentials) {
 			form.AddNonFieldError("Email or Password is incorrect")
 			data := app.newTemplateData(r)
@@ -240,10 +242,10 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	path := app.sessionManager.PopString(r.Context(), "redirectPathAfterLogin")
 	if path != "" {
 		w.Header().Set("HX-Redirect", path)
-		http.Redirect(w, r, path, http.StatusSeeOther)
+		w.WriteHeader(http.StatusSeeOther)
 	}
 	w.Header().Set("HX-Redirect", "/article/create")
-	http.Redirect(w, r, "/article/create", http.StatusSeeOther)
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func (app *application) setLanguage(w http.ResponseWriter, r *http.Request) {
@@ -264,6 +266,16 @@ func (app *application) setTheme(w http.ResponseWriter, r *http.Request) {
 	}
 	theme := app.sessionManager.PopBool(r.Context(), "isLightTheme")
 	app.sessionManager.Put(r.Context(), "isLightTheme", !theme)
+	w.Header().Set("HX-Redirect", r.Referer())
+	w.WriteHeader(http.StatusOK)
+}
+
+func (app *application) logoutPost(w http.ResponseWriter, r *http.Request) {
+	err := app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
 	w.Header().Set("HX-Redirect", r.Referer())
 	w.WriteHeader(http.StatusOK)
 }
