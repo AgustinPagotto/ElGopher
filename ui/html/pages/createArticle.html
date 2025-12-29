@@ -37,16 +37,19 @@
   </label>
   <label for="preview">
     Preview
+
     <input
       type="checkbox"
       role="switch"
+      name="preview"
       id="preview"
-      hx-on:change="
-      document.getElementById('preview').hidden = !this.checked;
-      document.getElementById('body').hidden = this.checked;
-    "
+      hx-include="#body"
+      hx-trigger="change"
+      hx-get="/article/create"
+      hx-target="#preview-area"
     />
   </label>
+  {{template "article_preview" .}}
   <label for="published">
     Publish Now?
     <input type="checkbox" id="published" name="published" role="switch" />

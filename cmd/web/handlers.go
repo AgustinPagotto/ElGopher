@@ -55,6 +55,21 @@ func (app *application) articleCreate(w http.ResponseWriter, r *http.Request) {
 			errMsg = "Body cannot be blank"
 		}
 		app.renderHtmxPartial(w, r, "field_error", errMsg)
+	case "preview":
+		preview := r.URL.Query().Has("preview")
+		if preview {
+			body := r.URL.Query().Get("body")
+			data := app.newTemplateData(r)
+			htmlBody, err := app.MarkToHTML(body)
+			if err != nil {
+				app.clientError(w)
+				return
+			}
+			data.ArticleBody = template.HTML(htmlBody)
+			app.renderHtmxPartial(w, r, "article_preview", data)
+		} else {
+			app.renderHtmxPartial(w, r, "article_preview", app.newTemplateData(r))
+		}
 	default:
 		app.render(w, r, http.StatusOK, "createArticle.html", app.newTemplateData(r))
 	}
