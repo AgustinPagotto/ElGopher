@@ -50,6 +50,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 			"./ui/html/partials/nav.html",
 			"./ui/html/partials/field_error.html",
 			"./ui/html/partials/form_error.html",
+			"./ui/html/partials/article_preview.html",
 			page,
 		}
 		ts, err := template.New(name).Funcs(functions).ParseFiles(files...)
