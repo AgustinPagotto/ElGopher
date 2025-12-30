@@ -25,7 +25,7 @@ func humanDate(t time.Time) string {
 	if t.IsZero() {
 		return ""
 	}
-	return t.UTC().Format("02 Jan 2006")
+	return t.UTC().Format("02/01/2006")
 }
 
 func getTranslation(t templateData, key string) string {
