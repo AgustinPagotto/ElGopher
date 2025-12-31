@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
@@ -32,9 +33,18 @@ func getTranslation(t templateData, key string) string {
 	return t.Translator.T(key)
 }
 
+func addBreakLines(text string) template.HTML {
+	return template.HTML(strings.ReplaceAll(
+		template.HTMLEscapeString(text),
+		"\n",
+		"<br>",
+	))
+}
+
 var functions = template.FuncMap{
 	"humanDate":      humanDate,
 	"getTranslation": getTranslation,
+	"addBreakLines":  addBreakLines,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
