@@ -1,40 +1,27 @@
 {{define "title"}}Home{{end}} {{define "main"}}
 <div class="scnd-header">
-  <h1>Welcome to my page!</h1>
+  <h1>{{getTranslation . "home.header"}}</h1>
 </div>
 <section>
-  <h3>Who am I?</h3>
+  <h3>{{getTranslation . "home.whoami"}}</h3>
   <div class="presentation">
     <img class="personal-img" src="/static/img/me.jpg" alt="personal image" />
-    <p>
-      Hello! I'm Agustin!
-      <br />
-      I work remotely as a Software Engineer at Teladoc Health. Previously, I
-      worked at Tsoft for 2 years.
-      <br />
-      I have a barchelors degree en System Engineering and I live in a small
-      city in the north of Argentina.
-    </p>
+    <p>{{addBreakLines (getTranslation . "home.whoamiparagraph")}}</p>
   </div>
 </section>
 <section>
-  <h3>Articles</h3>
-  <p>
-    This website has the purpose of introducing myself, and also to be a place
-    to write about technical and not so technical stuff about Go
-  </p>
+  <h3>{{getTranslation . "blog"}}</h3>
+  <p>{{getTranslation . "home.blogparagraph"}}</p>
   <h6>
-    <a href="#" class="pico-color-azure-600">Go to my latest Article -></a>
+    <a href="#" class="pico-color-azure-600"
+      >{{getTranslation . "home.gotolastarticlelink"}}</a
+    >
   </h6>
 </section>
 
 <section>
-  <h3>Contact</h3>
-  <p>
-    If you have a doubt about the site, have a job oportunity that i might be
-    interested in or you just want to talk about programming or go, don't
-    hesitate to reach out!
-  </p>
+  <h3>{{getTranslation . "home.contact"}}</h3>
+  <p>{{getTranslation . "home.contactparagraph"}}</p>
   <div class="contact-row">
     <a
       href="https://www.linkedin.com/in/agustin-op"
