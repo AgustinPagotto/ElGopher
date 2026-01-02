@@ -104,7 +104,13 @@ func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := app.newTemplateData(r)
-	article, err := app.articles.GetWithSlug(r.Context(), slug)
+	var article models.Article
+	var err error
+	if slug == "latest" {
+		article, err = app.articles.GetLatest(r.Context())
+	} else {
+		article, err = app.articles.GetWithSlug(r.Context(), slug)
+	}
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			http.NotFound(w, r)
@@ -124,7 +130,7 @@ func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
-	articles, err := app.articles.GetLastFive(r.Context())
+	articles, err := app.articles.GetArticles(r.Context())
 	if err != nil {
 		app.serverError(w, r, err)
 	}

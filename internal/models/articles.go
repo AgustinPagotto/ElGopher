@@ -25,7 +25,8 @@ type ArticleModelInterface interface {
 	Delete(ctx context.Context, id int) error
 	Get(ctx context.Context, id int) (Article, error)
 	GetWithSlug(ctx context.Context, slug string) (Article, error)
-	GetLastFive(ctx context.Context) ([]Article, error)
+	GetArticles(ctx context.Context) ([]Article, error)
+	GetLatest(ctx context.Context) (Article, error)
 }
 
 type ArticleModel struct {
@@ -76,8 +77,8 @@ func (am *ArticleModel) GetWithSlug(ctx context.Context, slug string) (Article, 
 	return article, nil
 }
 
-func (am *ArticleModel) GetLastFive(ctx context.Context) ([]Article, error) {
-	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles ORDER BY updated_at DESC LIMIT 5;`
+func (am *ArticleModel) GetArticles(ctx context.Context) ([]Article, error) {
+	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles ORDER BY created DESC;`
 	rows, err := am.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
@@ -96,6 +97,20 @@ func (am *ArticleModel) GetLastFive(ctx context.Context) ([]Article, error) {
 		return nil, err
 	}
 	return articles, nil
+}
+
+func (am *ArticleModel) GetLatest(ctx context.Context) (Article, error) {
+	var article Article
+	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles ORDER BY created DESC LIMIT 1;`
+	err := am.POOL.QueryRow(ctx, sqlQuery).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created, &article.UpdatedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return Article{}, ErrNoRecord
+		} else {
+			return Article{}, err
+		}
+	}
+	return article, nil
 }
 
 func (am *ArticleModel) Delete(ctx context.Context, id int) error {
