@@ -11,7 +11,7 @@ var EN = map[string]string{
 	"home.whoami":     "Who am I?",
 	"home.whoamiparagraph": `Hello! I'm Agustin!
 I work remotely as a Software Engineer at Teladoc Health. Previously, I worked at Tsoft for 2 years.
-I have a barchelors degree en System Engineering and I live in a small city in the north of Argentina.`,
+I have a barchelors degree in System Engineering and I live in a small city in the north of Argentina.`,
 	"home.blogparagraph":       `This website has the purpose of introducing myself, and also to be a place to write about technical and not so technical stuff about Go.`,
 	"home.gotolastarticlelink": "Go to my latest article -> ",
 	"home.contact":             "Contact",
