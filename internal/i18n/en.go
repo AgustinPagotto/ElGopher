@@ -24,4 +24,5 @@ I have a barchelors degree en System Engineering and I live in a small city in t
 	"about.thanks":             "Thanks!",
 	"about.thanksparagraph": ` This section will be just to give thanks to all the authors/people that let me learn from his books, podcasts, articles, etc. and made my journey to being a Go developer possible.
 	Thanks a lot to:`,
+	"projects.personalprojects": "Personal Projects",
 }

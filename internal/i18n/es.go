@@ -24,4 +24,5 @@ Vivo en La Rioja, Argentina y soy Ingeniero en Sistemas.`,
 	"about.thanks":             "Gracias!",
 	"about.thanksparagraph": `En esta seccion voy a dar las gracias a las personas/autores que dejaron que aprenda con sus libros, podcasts, articulos, etc. e hicieron mi camino a desarrollar en Go posible.
 	Muchas gracias a:`,
+	"projects.personalprojects": "Proyectos Personales",
 }
