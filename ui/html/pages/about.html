@@ -1,36 +1,23 @@
 {{define "title"}}About Me{{end}} {{define "main"}}
 <div class="scnd-header">
-  <h1>About</h1>
+  <h1>{{getTranslation . "about"}}</h1>
 </div>
 
 <section>
-  <h2>Why ElGopher?</h2>
-  <p>
-    Go was the language that really brought back my interest in learning how to
-    properly use a programming language, read books about it and just play
-    around with new projects. That is why I wanted to pay some respect to the
-    language by using the Gopher name, also the "El" part is just "The" but in
-    spanish, and since my primary language is Spanish I liked the wordplay.
-  </p>
-</section>
-
-<section>
-  <h2>ElGopher Page Tech Stack</h2>
+  <h2>{{getTranslation . "about.techstack"}}</h2>
   <ul class="double-column">
-    <li><strong>Go</strong> for backend logic and templating</li>
-    <li><strong>HTMX</strong> for lightweight interactions</li>
-    <li><strong>PostgreSQL</strong> for persistence</li>
-    <li><strong>Pico.css</strong> for light styling</li>
+    <li><strong>Go</strong>{{getTranslation . "about.gotechstack"}}</li>
+    <li><strong>HTMX</strong>{{getTranslation . "about.htmxtechstack"}}</li>
+    <li>
+      <strong>PostgreSQL</strong>{{getTranslation . "about.psqltechstack"}}
+    </li>
+    <li><strong>Pico.css</strong>{{getTranslation . "about.picotechstack"}}</li>
   </ul>
 </section>
 
 <section>
-  <h2>Thanks!</h2>
-  <p>
-    This section will be just to give thanks to all the authors/people that let
-    me learn from his books, podcasts, articles, etc. and made my journey to
-    being a Go developer possible. Thanks a lot to:
-  </p>
+  <h2>{{getTranslation . "about.thanks"}}</h2>
+  <p>{{addBreakLines (getTranslation . "about.thanksparagraph")}}</p>
   <ul>
     <li>
       <strong>Jon Bodner</strong> author of Learning Go: An Idiomatic Approach
