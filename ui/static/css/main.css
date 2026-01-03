@@ -122,6 +122,12 @@ footer {
   font-weight: 500;
 }
 
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .lang-switch a.active {
   opacity: 1;
   text-decoration: underline;
@@ -131,4 +137,28 @@ footer {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+}
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  nav > ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  nav > ul:first-child {
+    justify-content: center;
+  }
+
+  nav > ul:last-child {
+    gap: 0.5rem;
+  }
+
+  nav li {
+    white-space: nowrap;
+  }
 }
