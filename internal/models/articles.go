@@ -24,6 +24,7 @@ type ArticleModelInterface interface {
 	Insert(ctx context.Context, title, body string, publish bool) (int, error)
 	Delete(ctx context.Context, id int) error
 	Get(ctx context.Context, id int) (Article, error)
+	Update(ctx context.Context, title, body string, is_published bool, id int) error
 	GetWithSlug(ctx context.Context, slug string) (Article, error)
 	GetArticles(ctx context.Context) ([]Article, error)
 	GetLatest(ctx context.Context) (Article, error)
@@ -116,6 +117,15 @@ func (am *ArticleModel) GetLatest(ctx context.Context) (Article, error) {
 func (am *ArticleModel) Delete(ctx context.Context, id int) error {
 	sqlQuery := `DELETE FROM articles WHERE id = ?;`
 	_, err := am.POOL.Exec(context.Background(), sqlQuery, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (am *ArticleModel) Update(ctx context.Context, title, body string, is_published bool, id int) error {
+	sqlQuery := `UPDATE articles SET title = $1, body = $2, is_published = $3 WHERE id = $4;`
+	_, err := am.POOL.Exec(ctx, sqlQuery, title, body, is_published, id)
 	if err != nil {
 		return err
 	}

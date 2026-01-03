@@ -301,3 +301,27 @@ func (app *application) logoutPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Redirect", r.Referer())
 	w.WriteHeader(http.StatusOK)
 }
+
+func (app *application) articleEdit(w http.ResponseWriter, r *http.Request) {
+	slug := r.PathValue("slug")
+	if slug == "" {
+		http.NotFound(w, r)
+		return
+	}
+	data := app.newTemplateData(r)
+	var article models.Article
+	var err error
+	article, err = app.articles.GetWithSlug(r.Context(), slug)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			http.NotFound(w, r)
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+	data.Article = article
+	app.render(w, r, http.StatusOK, "createArticle.html", data)
+}
+func (app *application) articlePatch(w http.ResponseWriter, r *http.Request) {
+}
