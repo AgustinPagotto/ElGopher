@@ -10,7 +10,18 @@
     <li><a href="/projects">{{getTranslation . "nav.projects"}}</a></li>
     <li><a href="/about">{{getTranslation . "about"}}</a></li>
     {{if .IsAuthenticated}}
-    <li><a hx-post="/user/logout">{{getTranslation . "nav.logout"}}</a></li>
+    <li>
+      <input
+        class="csrftoken"
+        id="csrftoken"
+        type="hidden"
+        name="csrf_token"
+        value="{{.CSRFToken}}"
+      />
+      <a hx-include="#csrftoken" hx-post="/user/logout"
+        >{{getTranslation . "nav.logout"}}</a
+      >
+    </li>
     {{end}}
 
     <li class="lang-switch">
