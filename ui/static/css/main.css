@@ -126,3 +126,9 @@ footer {
   opacity: 1;
   text-decoration: underline;
 }
+.article-headertop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}

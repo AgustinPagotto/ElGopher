@@ -1,7 +1,15 @@
 {{define "title"}}{{.Article.Title}}{{end}} {{define "main"}}
 <div class="article-header">
-  <h1>{{.Article.Title}}</h1>
-  <h6>Published on: {{humanDate .Article.Created}}</h6>
+  <div class="article-headertop">
+    <h1>{{.Article.Title}}</h1>
+    {{if .IsAuthenticated}}
+    <a href="/article/edit/{{.Article.Slug}}" role="button" class="secondary">
+      Edit
+    </a>
+    {{end}}
+	</div>
+    <h6>Published on: {{humanDate .Article.Created}}</h6>
+  </div>
+  <div class="container">{{.ArticleBody}}</div>
+  {{end}}
 </div>
-<div class="container">{{.ArticleBody}}</div>
-{{end}}

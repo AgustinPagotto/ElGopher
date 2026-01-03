@@ -5,6 +5,12 @@
 <div id="form-errors"></div>
 <form
   hx-post="/article/create"
+  {{if
+  .Article.ID}}
+  hx-patch="/article/{{.Article.ID}}"
+  {{else}}
+  hx-post="/article/create"
+  {{end}}
   hx-target="#form-errors"
   hx-swap="innerHTML"
   novalidate
@@ -15,6 +21,7 @@
       type="text"
       id="title"
       name="title"
+      value="{{.Article.Title}}"
       placeholder="Enter the post title"
       hx-trigger="blur"
       hx-get="/article/create"
@@ -32,12 +39,13 @@
       hx-get="/article/create"
       hx-target="next .error"
       onInput="this.parentNode.dataset.replicatedValue = this.value"
-    ></textarea>
+    >
+{{.Article.Body}}</textarea
+    >
     {{template "field_error" .Form.FieldErrors.body}}
   </label>
   <label for="preview">
     Preview
-
     <input
       type="checkbox"
       role="switch"
@@ -52,7 +60,13 @@
   {{template "article_preview" .}}
   <label for="published">
     Publish Now?
-    <input type="checkbox" id="published" name="published" role="switch" />
+    <input
+      type="checkbox"
+      value="{{.Article.IsPublished}}"
+      id="published"
+      name="published"
+      role="switch"
+    />
   </label>
 
   <button type="submit">Save Post</button>

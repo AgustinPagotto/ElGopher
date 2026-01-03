@@ -24,6 +24,8 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /pref/lng", dynamic.ThenFunc(app.setLanguage))
 	mux.Handle("GET /pref/thm", dynamic.ThenFunc(app.setTheme))
 	protected := dynamic.Append(app.requireAuthentiation)
+	mux.Handle("GET /article/edit/{slug}", dynamic.ThenFunc(app.articleEdit))
+	mux.Handle("PATCH /article/{id}", dynamic.ThenFunc(app.articlePatch))
 	mux.Handle("GET /article/create", protected.ThenFunc(app.articleCreate))
 	mux.Handle("POST /article/create", protected.ThenFunc(app.articleCreatePost))
 	standars := alice.New(app.recoverPanic, app.logRequest, commonHeaders, timeoutMiddleware)
