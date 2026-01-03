@@ -2,12 +2,14 @@ package main
 
 import (
 	"html/template"
+	"io/fs"
 	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/AgustinPagotto/ElGopher/internal/models"
+	"github.com/AgustinPagotto/ElGopher/ui"
 )
 
 type templateData struct {
@@ -50,21 +52,18 @@ var functions = template.FuncMap{
 
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
-	pages, err := filepath.Glob("./ui/html/pages/*.html")
+	pages, err := fs.Glob(ui.Files, "html/pages/*.html")
 	if err != nil {
 		return nil, err
 	}
 	for _, page := range pages {
 		name := filepath.Base(page)
-		files := []string{
-			"./ui/html/base.html",
-			"./ui/html/partials/nav.html",
-			"./ui/html/partials/field_error.html",
-			"./ui/html/partials/form_error.html",
-			"./ui/html/partials/article_preview.html",
+		patterns := []string{
+			"html/base.html",
+			"html/partials/*.html",
 			page,
 		}
-		ts, err := template.New(name).Funcs(functions).ParseFiles(files...)
+		ts, err := template.New(name).Funcs(functions).ParseFS(ui.Files, patterns...)
 		if err != nil {
 			return nil, err
 		}
