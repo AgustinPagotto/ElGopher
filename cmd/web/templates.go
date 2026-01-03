@@ -20,6 +20,7 @@ type templateData struct {
 	IsSpanish       bool
 	IsLightTheme    bool
 	Translator      i18n.Translator
+	CSRFToken       string
 }
 
 func humanDate(t time.Time) string {

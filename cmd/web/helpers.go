@@ -10,6 +10,7 @@ import (
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/go-playground/form/v4"
+	"github.com/justinas/nosurf"
 )
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {
@@ -78,6 +79,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		IsSpanish:       app.isSpanish(r),
 		IsLightTheme:    app.isLightTheme(r),
 		Translator:      app.getTranslator(r),
+		CSRFToken:       nosurf.Token(r),
 	}
 }
 
