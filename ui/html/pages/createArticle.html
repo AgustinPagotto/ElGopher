@@ -4,7 +4,6 @@
 </div>
 <div id="form-errors"></div>
 <form
-  hx-post="/article/create"
   {{if
   .Article.ID}}
   hx-patch="/article/{{.Article.ID}}"
@@ -69,6 +68,10 @@
     />
   </label>
 
+  {{if .Article.ID}}
+  <button type="submit">Edit Post</button>
+  {{else}}
   <button type="submit">Save Post</button>
+  {{end}}
 </form>
 {{end}}

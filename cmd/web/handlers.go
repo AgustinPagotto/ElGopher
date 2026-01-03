@@ -4,6 +4,7 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/AgustinPagotto/ElGopher/internal/validator"
@@ -324,4 +325,21 @@ func (app *application) articleEdit(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "createArticle.html", data)
 }
 func (app *application) articlePatch(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil || id < 1 {
+		http.NotFound(w, r)
+		return
+	}
+	var form articleCreateForm
+	err = app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w)
+		return
+	}
+	err = app.articles.Update(r.Context(), form.Title, form.Body, form.Publish, id)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	w.Header().Set("HX-Redirect", "/articles")
+	w.WriteHeader(http.StatusOK)
 }
