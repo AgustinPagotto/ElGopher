@@ -22,7 +22,7 @@ func newTestApplication(t *testing.T) *application {
 	formDecoder := form.NewDecoder()
 	sessionManager := scs.New()
 	sessionManager.Lifetime = 12 * time.Hour
-	sessionManager.Cookie.Secure = true
+	sessionManager.Cookie.Secure = false //change to true when using https
 	return &application{
 		logger:         slog.New(slog.NewTextHandler(io.Discard, nil)),
 		templateCache:  templateCache,
