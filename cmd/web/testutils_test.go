@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/AgustinPagotto/ElGopher/internal/models/mocks"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
 )
@@ -28,6 +29,8 @@ func newTestApplication(t *testing.T) *application {
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
+		users:          &mocks.UserModel{},
+		articles:       &mocks.ArticleModel{},
 	}
 }
 
