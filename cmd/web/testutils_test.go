@@ -13,6 +13,8 @@ import (
 	"github.com/AgustinPagotto/ElGopher/internal/models/mocks"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
+	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 )
 
 func newTestApplication(t *testing.T) *application {
@@ -31,6 +33,13 @@ func newTestApplication(t *testing.T) *application {
 		sessionManager: sessionManager,
 		users:          &mocks.UserModel{},
 		articles:       &mocks.ArticleModel{},
+		markdownParser: goldmark.New(
+			goldmark.WithExtensions(
+				highlighting.NewHighlighting(
+					highlighting.WithStyle("solarized-dark"),
+				),
+			),
+		),
 	}
 }
 
