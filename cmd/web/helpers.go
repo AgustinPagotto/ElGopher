@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"runtime/debug"
+	"strconv"
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/go-playground/form/v4"
@@ -121,4 +123,13 @@ func (a *application) getTranslator(r *http.Request) i18n.Translator {
 		return i18n.Translator{Messages: i18n.EN}
 	}
 	return i18n.Translator{Messages: i18n.ES}
+}
+
+func IsProd() bool {
+	v := os.Getenv("IS_PROD")
+	ok, err := strconv.ParseBool(v)
+	if err != nil {
+		return false
+	}
+	return ok
 }

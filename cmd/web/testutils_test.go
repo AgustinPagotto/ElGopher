@@ -92,7 +92,8 @@ func (ts *testServer) postForm(t *testing.T, urlPath string, form url.Values) (i
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.Header.Set("Referer", ts.URL+urlPath)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Referer", ts.URL+"/")
 
 	rs, err := ts.Client().Do(req)
 	if err != nil {
