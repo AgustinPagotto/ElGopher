@@ -108,11 +108,13 @@ func (a *application) preferences(next http.Handler) http.Handler {
 }
 
 func noSurf(next http.Handler) http.Handler {
+	prod := IsProd()
 	csrfHandler := nosurf.New(next)
 	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
 		Path:     "/",
-		Secure:   true,
+		Secure:   prod,
 	})
+	csrfHandler.SetIsTLSFunc(func(r *http.Request) bool { return r.TLS != nil })
 	return csrfHandler
 }

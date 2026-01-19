@@ -126,7 +126,7 @@ func TestArticleCreate(t *testing.T) {
 		status, _, body := ts.postForm(t, "/user/login", form)
 		status, _, body = ts.get(t, "/article/create")
 		assert.Equal(t, status, http.StatusOK)
-		assert.StringContains(t, body, "<form hx-post='/article/create'")
+		assert.StringContains(t, body, `hx-post="/article/create"`)
 	})
 }
 
@@ -139,7 +139,6 @@ func TestLogin(t *testing.T) {
 	form.Add("email", "alice@example.com")
 	form.Add("password", "pa$$word")
 	form.Add("csrf_token", token)
-	t.Log(form)
-	status, _, body := ts.postForm(t, "/user/login", form)
-	assert.Equal(t, status, http.StatusOK)
+	status, _, _ := ts.postForm(t, "/user/login", form)
+	assert.Equal(t, status, http.StatusSeeOther)
 }
