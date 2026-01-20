@@ -1,15 +1,37 @@
+# Build stage
 FROM golang:1.25-bookworm AS builder
 
-WORKDIR /build
+WORKDIR /app
 
+# Copy go mod files first for better caching
 COPY go.mod go.sum ./
-
 RUN go mod download
 
+# Copy source code
 COPY . .
 
-RUN go build -o ElGopher
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o web ./cmd/web
 
+# Final stage
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+# Install CA certificates and timezone data
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates tzdata && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user for security
+RUN useradd -r -s /bin/false appuser
+
+# Copy the binary from builder
+COPY --from=builder /app/web .
+
+# Use non-root user
+USER appuser
+
+# Expose port
 EXPOSE 8080
 
+# Run the application
 CMD ["./web"]
