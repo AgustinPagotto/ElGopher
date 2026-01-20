@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"html/template"
 	"log/slog"
@@ -30,11 +29,17 @@ type application struct {
 }
 
 func main() {
-	dsn := flag.String("dsn", "postgres://postgres:admin@localhost:5432/elgopher", "PostgreSQL data source name")
-	flag.Parse()
+	dsn := os.Getenv("DATABASE_URL")
+	port := os.Getenv("PORT")
+	if dsn == "" {
+		dsn = "postgres://postgres:admin@localhost:5432/elgopher"
+	}
+	if port == "" {
+		port = "4000"
+	}
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
 	var ctx = context.Background()
-	pool, err := openDB(*dsn, ctx)
+	pool, err := openDB(dsn, ctx)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
@@ -67,14 +72,14 @@ func main() {
 		),
 	}
 	srv := &http.Server{
-		Addr:         ":4000",
+		Addr:         ":" + port,
 		Handler:      app.routes(),
 		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-	app.logger.Info("Starting server at :4000")
+	app.logger.Info("Starting server at :", "port", port)
 	err = srv.ListenAndServe()
 	if err != nil {
 		fmt.Print(err)
