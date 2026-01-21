@@ -135,7 +135,14 @@ func (app *application) articleView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) viewArticles(w http.ResponseWriter, r *http.Request) {
-	articles, err := app.articles.GetArticles(r.Context())
+	auth := app.isAuthenticated(r)
+	var articles []models.Article
+	var err error
+	if auth {
+		articles, err = app.articles.GetArticles(r.Context())
+	} else {
+		articles, err = app.articles.GetPublishedArticles(r.Context())
+	}
 	if err != nil {
 		app.serverError(w, r, err)
 	}

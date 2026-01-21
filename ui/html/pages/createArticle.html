@@ -58,14 +58,15 @@
     />
   </label>
   {{template "article_preview" .}}
-  <label for="published">
+  <label for="publish">
     Publish Now?
     <input
       type="checkbox"
-      value="{{.Article.IsPublished}}"
-      id="published"
-      name="published"
+      id="publish"
+      name="publish"
       role="switch"
+      {{if
+      .Article.IsPublished}}checked{{end}}
     />
   </label>
 

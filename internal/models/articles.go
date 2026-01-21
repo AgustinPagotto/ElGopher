@@ -27,6 +27,7 @@ type ArticleModelInterface interface {
 	Update(ctx context.Context, title, body string, is_published bool, id int) error
 	GetWithSlug(ctx context.Context, slug string) (Article, error)
 	GetArticles(ctx context.Context) ([]Article, error)
+	GetPublishedArticles(ctx context.Context) ([]Article, error)
 	GetLatest(ctx context.Context) (Article, error)
 }
 
@@ -80,6 +81,28 @@ func (am *ArticleModel) GetWithSlug(ctx context.Context, slug string) (Article, 
 
 func (am *ArticleModel) GetArticles(ctx context.Context) ([]Article, error) {
 	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles ORDER BY created DESC;`
+	rows, err := am.POOL.Query(ctx, sqlQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var articles []Article
+	for rows.Next() {
+		var a Article
+		err = rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Excerpt, &a.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		articles = append(articles, a)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return articles, nil
+}
+
+func (am *ArticleModel) GetPublishedArticles(ctx context.Context) ([]Article, error) {
+	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles WHERE is_published = true ORDER BY created DESC;`
 	rows, err := am.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
