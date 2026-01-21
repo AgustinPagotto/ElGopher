@@ -52,6 +52,9 @@ func (am *ArticleModel) GetWithSlug(ctx context.Context, slug string) (models.Ar
 func (am *ArticleModel) GetArticles(ctx context.Context) ([]models.Article, error) {
 	return []models.Article{}, nil
 }
+func (am *ArticleModel) GetPublishedArticles(ctx context.Context) ([]models.Article, error) {
+	return []models.Article{}, nil
+}
 func (am *ArticleModel) GetLatest(ctx context.Context) (models.Article, error) {
 	return mockArticle, nil
 }
