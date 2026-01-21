@@ -8,6 +8,7 @@
     <a class="pico-color-azure-500" href="/article/view/{{.Slug}}"
       >{{.Title}}</a
     >
+    {{if $.IsAuthenticated}} {{if .IsPublished}} Published {{end}} {{end}}
     {{humanDate .UpdatedAt}}
   </article>
   {{end}} {{end}}
