@@ -80,7 +80,7 @@ func (am *ArticleModel) GetWithSlug(ctx context.Context, slug string) (Article, 
 }
 
 func (am *ArticleModel) GetArticles(ctx context.Context) ([]Article, error) {
-	sqlQuery := `SELECT id, title, slug, excerpt, updated_at FROM articles ORDER BY created DESC;`
+	sqlQuery := `SELECT id, title, slug, excerpt, updated_at, is_published FROM articles ORDER BY created DESC;`
 	rows, err := am.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (am *ArticleModel) GetArticles(ctx context.Context) ([]Article, error) {
 	var articles []Article
 	for rows.Next() {
 		var a Article
-		err = rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Excerpt, &a.UpdatedAt)
+		err = rows.Scan(&a.ID, &a.Title, &a.Slug, &a.Excerpt, &a.UpdatedAt, &a.IsPublished)
 		if err != nil {
 			return nil, err
 		}
