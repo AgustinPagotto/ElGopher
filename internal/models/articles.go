@@ -125,7 +125,7 @@ func (am *ArticleModel) GetPublishedArticles(ctx context.Context) ([]Article, er
 
 func (am *ArticleModel) GetLatest(ctx context.Context) (Article, error) {
 	var article Article
-	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles ORDER BY created DESC LIMIT 1;`
+	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE is_published = true ORDER BY created DESC LIMIT 1;`
 	err := am.POOL.QueryRow(ctx, sqlQuery).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created, &article.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
