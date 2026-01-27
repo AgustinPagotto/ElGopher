@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
+	"github.com/AgustinPagotto/ElGopher/ui"
 	"github.com/go-playground/form/v4"
 	"github.com/justinas/nosurf"
 )
@@ -46,8 +47,8 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 }
 
 func (app *application) renderHtmxPartial(w http.ResponseWriter, r *http.Request, partial string, data any) {
-	partialPath := fmt.Sprintf("./ui/html/partials/%s.html", partial)
-	tmpl, err := template.ParseFiles(partialPath)
+	partialPath := fmt.Sprintf("html/partials/%s.html", partial)
+	tmpl, err := template.ParseFS(ui.Files, partialPath)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
