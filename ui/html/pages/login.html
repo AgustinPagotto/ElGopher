@@ -2,38 +2,52 @@
 <div class="scnd-header">
   <h1>Login</h1>
 </div>
+<div id="form-errors" role="alert" aria-live="polite"></div>
 {{template "form_error" .Form.FormErrors}}
 <form
   hx-post="/user/login"
   hx-target="#form-errors"
   hx-swap="innerHTML"
+  hx-indicator="#login-spinner"
   novalidate
+  aria-label="Login form"
 >
   <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
-  <label class="email">
+  <label for="email">
     Email
     <input
-      type="text"
+      type="email"
       id="email"
       name="email"
-      hx-trigger="blur"
+      autocomplete="email"
+      required
+      aria-required="true"
+      aria-describedby="email-error"
+      hx-trigger="change delay:300ms"
       hx-get="/user/login"
-      hx-target="next .error"
+      hx-target="#email-error"
     />
-    {{template "field_error" .Form.FieldErrors.email}}
+    <span id="email-error" role="alert">{{template "field_error" .Form.FieldErrors.email}}</span>
   </label>
-  <label class="password">
+  <label for="password">
     Password
     <input
       type="password"
       id="password"
       name="password"
-      hx-trigger="blur"
+      autocomplete="current-password"
+      required
+      aria-required="true"
+      aria-describedby="password-error"
+      hx-trigger="change delay:300ms"
       hx-get="/user/login"
-      hx-target="next .error"
+      hx-target="#password-error"
     />
-    {{template "field_error" .Form.FieldErrors.email}}
+    <span id="password-error" role="alert">{{template "field_error" .Form.FieldErrors.password}}</span>
   </label>
-  <button type="submit">Log In</button>
+  <button type="submit" aria-label="Log in to your account">
+    <span>Log In</span>
+    <span id="login-spinner" class="htmx-indicator" aria-hidden="true">⏳</span>
+  </button>
 </form>
 {{end}}

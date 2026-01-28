@@ -1,12 +1,27 @@
 {{define "form_error"}}
 <div id="form-errors">
   {{if .Form.FieldErrors}}
-  <article role="alert" class="pico-background-red-600">
-    {{range $field, $err := .Form.FieldErrors}}
-    <strong>{{ $field }}:</strong> {{ $err }} <br />{{end}}
+  <article role="alert" class="pico-background-red-600" style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Please correct the following errors:</strong>
+    <ul style="margin-top: 0.5rem; margin-bottom: 0; padding-left: 1.5rem;">
+      {{range $field, $err := .Form.FieldErrors}}
+      <li><strong>{{ $field }}:</strong> {{ $err }}</li>
+      {{end}}
+    </ul>
   </article>
-  {{end}} {{if .Form.NonFieldErrors}}
-  <article role="alert" class="pico-background-red-600">
+  {{end}} 
+  {{if .Form.NonFieldErrors}}
+  <article role="alert" class="pico-background-red-600" style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
     {{range .Form.NonFieldErrors}}
     <strong>{{ . }}</strong>
     {{end}}

@@ -33,8 +33,9 @@
     ></script>
   </head>
   <body hx-boost="true">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <header class="container">{{template "nav" .}}</header>
-    <main class="container">{{template "main" .}}</main>
+    <main id="main-content" class="container" tabindex="-1">{{template "main" .}}</main>
     <footer class="container">
       © 2026 El Gopher · Built with Go ·&nbsp;
       <a href="https://github.com/AgustinPagotto/ElGopher">MIT License</a>

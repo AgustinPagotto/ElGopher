@@ -2,7 +2,7 @@
 <div class="scnd-header">
   <h1>New Article</h1>
 </div>
-<div id="form-errors"></div>
+<div id="form-errors" role="alert" aria-live="polite"></div>
 <form
   {{if
   .Article.ID}}
@@ -12,7 +12,9 @@
   {{end}}
   hx-target="#form-errors"
   hx-swap="innerHTML"
+  hx-indicator="#article-spinner"
   novalidate
+  aria-label="Article editor form"
 >
   <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
   <label for="title">
@@ -23,11 +25,14 @@
       name="title"
       value="{{.Article.Title}}"
       placeholder="Enter the post title"
-      hx-trigger="blur"
+      required
+      aria-required="true"
+      aria-describedby="title-error"
+      hx-trigger="change delay:500ms"
       hx-get="/article/create"
-      hx-target="next .error"
+      hx-target="#title-error"
     />
-    {{template "field_error" .Form.FieldErrors.title}}
+    <span id="title-error" role="alert">{{template "field_error" .Form.FieldErrors.title}}</span>
   </label>
   <label for="body">
     Body
@@ -35,14 +40,17 @@
       name="body"
       id="body"
       placeholder="Enter the post content"
-      hx-trigger="blur"
+      required
+      aria-required="true"
+      aria-describedby="body-error"
+      hx-trigger="change delay:500ms"
       hx-get="/article/create"
-      hx-target="next .error"
+      hx-target="#body-error"
       onInput="this.parentNode.dataset.replicatedValue = this.value"
     >
 {{.Article.Body}}</textarea
     >
-    {{template "field_error" .Form.FieldErrors.body}}
+    <span id="body-error" role="alert">{{template "field_error" .Form.FieldErrors.body}}</span>
   </label>
   <label for="preview">
     Preview
@@ -51,11 +59,14 @@
       role="switch"
       name="preview"
       id="preview"
+      aria-label="Toggle article preview"
       hx-include="#body"
       hx-trigger="change"
       hx-get="/article/create"
       hx-target="#preview-area"
+      hx-indicator="#preview-spinner"
     />
+    <span id="preview-spinner" class="htmx-indicator" aria-hidden="true">⏳</span>
   </label>
   {{template "article_preview" .}}
   <label for="publish">
@@ -65,15 +76,22 @@
       id="publish"
       name="publish"
       role="switch"
+      aria-label="Publish article immediately"
       {{if
       .Article.IsPublished}}checked{{end}}
     />
   </label>
 
   {{if .Article.ID}}
-  <button type="submit">Edit Post</button>
+  <button type="submit" aria-label="Update article">
+    <span>Edit Post</span>
+    <span id="article-spinner" class="htmx-indicator" aria-hidden="true">⏳</span>
+  </button>
   {{else}}
-  <button type="submit">Save Post</button>
+  <button type="submit" aria-label="Save new article">
+    <span>Save Post</span>
+    <span id="article-spinner" class="htmx-indicator" aria-hidden="true">⏳</span>
+  </button>
   {{end}}
 </form>
 {{end}}

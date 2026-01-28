@@ -1,14 +1,14 @@
 {{define "nav"}}
-<nav>
+<nav aria-label="Main navigation">
   <ul>
-    <li><img class="logo" src="/static/img/gopher.png" alt="logo" /></li>
+    <li><img class="logo" src="/static/img/gopher.png" alt="ElGopher logo" /></li>
     <li><strong>ElGopher</strong></li>
   </ul>
   <ul>
-    <li><a href="/">{{getTranslation . "nav.home"}}</a></li>
-    <li><a href="/articles">{{getTranslation . "blog"}}</a></li>
-    <li><a href="/projects">{{getTranslation . "nav.projects"}}</a></li>
-    <li><a href="/about">{{getTranslation . "about"}}</a></li>
+    <li><a href="/" aria-label="Go to home page">{{getTranslation . "nav.home"}}</a></li>
+    <li><a href="/articles" aria-label="View all articles">{{getTranslation . "blog"}}</a></li>
+    <li><a href="/projects" aria-label="View projects">{{getTranslation . "nav.projects"}}</a></li>
+    <li><a href="/about" aria-label="About page">{{getTranslation . "about"}}</a></li>
     {{if .IsAuthenticated}}
     <li>
       <input
@@ -18,16 +18,20 @@
         name="csrf_token"
         value="{{.CSRFToken}}"
       />
-      <a hx-include="#csrftoken" hx-post="/user/logout"
+      <a 
+        hx-include="#csrftoken" 
+        hx-post="/user/logout"
+        hx-confirm="Are you sure you want to log out?"
+        aria-label="Log out from your account"
         >{{getTranslation . "nav.logout"}}</a
       >
     </li>
     {{end}}
 
-    <li class="lang-switch">
-      <a href="/pref/lng" class="{{if .IsSpanish}}active{{end}}">ES</a>
-      <span>/</span>
-      <a href="/pref/lng" class="{{if not .IsSpanish}}active{{end}}">EN</a>
+    <li class="lang-switch" role="group" aria-label="Language switcher">
+      <a href="/pref/lng" class="{{if .IsSpanish}}active{{end}}" aria-label="Switch to Spanish" aria-current="{{if .IsSpanish}}true{{end}}">ES</a>
+      <span aria-hidden="true">/</span>
+      <a href="/pref/lng" class="{{if not .IsSpanish}}active{{end}}" aria-label="Switch to English" aria-current="{{if not .IsSpanish}}true{{end}}">EN</a>
     </li>
     {{if not .IsLightTheme}}
     <li>
@@ -46,7 +50,10 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           style="vertical-align: middle"
+          role="img"
+          aria-hidden="true"
         >
+          <title>Moon icon</title>
           <path
             d="M21 12.79A9 9 0 1 1 11.21 3
                7 7 0 0 0 21 12.79z"
@@ -67,7 +74,10 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           style="vertical-align: middle"
+          role="img"
+          aria-hidden="true"
         >
+          <title>Sun icon</title>
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>

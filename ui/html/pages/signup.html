@@ -2,50 +2,68 @@
 <div class="scnd-header">
   <h1>SignUp</h1>
 </div>
+<div id="form-errors" role="alert" aria-live="polite"></div>
 {{template "form_error" .Form.FormErrors}}
 <form
   hx-post="/user/signup"
   hx-target="#form-errors"
   hx-swap="innerHTML"
+  hx-indicator="#signup-spinner"
   novalidate
+  aria-label="Signup form"
 >
   <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
-  <label class="name">
+  <label for="name">
     Name
     <input
       type="text"
       id="name"
       name="name"
-      hx-trigger="blur"
+      autocomplete="name"
+      required
+      aria-required="true"
+      aria-describedby="name-error"
+      hx-trigger="change delay:300ms"
       hx-get="/user/signup"
-      hx-target="next .error"
+      hx-target="#name-error"
     />
-    {{template "field_error" .Form.FieldErrors.name}}
+    <span id="name-error" role="alert">{{template "field_error" .Form.FieldErrors.name}}</span>
   </label>
-  <label class="email">
+  <label for="email">
     Email
     <input
-      type="text"
+      type="email"
       id="email"
       name="email"
-      hx-trigger="blur"
+      autocomplete="email"
+      required
+      aria-required="true"
+      aria-describedby="email-error"
+      hx-trigger="change delay:300ms"
       hx-get="/user/signup"
-      hx-target="next .error"
+      hx-target="#email-error"
     />
-    {{template "field_error" .Form.FieldErrors.email}}
+    <span id="email-error" role="alert">{{template "field_error" .Form.FieldErrors.email}}</span>
   </label>
-  <label class="password">
+  <label for="password">
     Password
     <input
       type="password"
       id="password"
       name="password"
-      hx-trigger="blur"
+      autocomplete="new-password"
+      required
+      aria-required="true"
+      aria-describedby="password-error"
+      hx-trigger="change delay:300ms"
       hx-get="/user/signup"
-      hx-target="next .error"
+      hx-target="#password-error"
     />
-    {{template "field_error" .Form.FieldErrors.email}}
+    <span id="password-error" role="alert">{{template "field_error" .Form.FieldErrors.password}}</span>
   </label>
-  <button type="submit">SignUp</button>
+  <button type="submit" aria-label="Create your account">
+    <span>SignUp</span>
+    <span id="signup-spinner" class="htmx-indicator" aria-hidden="true">⏳</span>
+  </button>
 </form>
 {{end}}
