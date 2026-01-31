@@ -43,7 +43,9 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 		return
 	}
 	w.WriteHeader(status)
-	buf.WriteTo(w)
+	if _, err = buf.WriteTo(w); err != nil {
+		app.logger.Error("failed to write template to response", "page", page, "error", err)
+	}
 }
 
 func (app *application) renderHtmxPartial(w http.ResponseWriter, r *http.Request, partial string, data any) {

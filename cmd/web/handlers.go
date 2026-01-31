@@ -17,12 +17,12 @@ type articleCreateForm struct {
 	validator.Validator `form:"-"`
 }
 
-type signUpForm struct {
-	Name                string `form:"name"`
-	Email               string `form:"email"`
-	Password            string `form:"password"`
-	validator.Validator `form:"-"`
-}
+//type signUpForm struct {
+//	Name                string `form:"name"`
+//	Email               string `form:"email"`
+//	Password            string `form:"password"`
+//	validator.Validator `form:"-"`
+//}
 
 type logInForm struct {
 	Email               string `form:"email"`
@@ -31,7 +31,9 @@ type logInForm struct {
 }
 
 func ping(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("OK"))
+	if _, err := w.Write([]byte("OK")); err != nil {
+		return
+	}
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -155,63 +157,63 @@ func (app *application) viewProjects(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, http.StatusOK, "projects.html", app.newTemplateData(r))
 }
 
-func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
-	hxTrigger := r.Header.Get("HX-Trigger")
-	app.logger.Info(hxTrigger)
-	switch hxTrigger {
-	case "name":
-		name := r.URL.Query().Get("name")
-		var errMsg string
-		if !validator.NotBlank(name) {
-			w.WriteHeader(http.StatusOK)
-			errMsg = "Name cannot be blank"
-		}
-		app.renderHtmxPartial(w, r, "field_error", errMsg)
-	case "email":
-		email := r.URL.Query().Get("email")
-		var errMsg string
-		if !validator.EmailValidator(email) {
-			w.WriteHeader(http.StatusOK)
-			errMsg = "Email contains errors"
-		}
-		app.renderHtmxPartial(w, r, "field_error", errMsg)
-	case "password":
-		password := r.URL.Query().Get("password")
-		var errMsg string
-		if !validator.PasswordValidator(password) {
-			w.WriteHeader(http.StatusOK)
-			errMsg = "Password cannot be blank or less than 8 characters"
-		}
-		app.renderHtmxPartial(w, r, "field_error", errMsg)
-	default:
-		app.render(w, r, http.StatusOK, "signup.html", app.newTemplateData(r))
-	}
-}
-
-func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
-	var form signUpForm
-	err := app.decodePostForm(r, &form)
-	if err != nil {
-		app.clientError(w)
-		return
-	}
-	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
-	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
-	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
-	form.CheckField(validator.Matches(form.Email, validator.EmailRX), "email", "This field must be a valid email address")
-	if !form.Valid() {
-		data := app.newTemplateData(r)
-		data.Form = form
-		app.renderHtmxPartial(w, r, "form_error", data)
-		return
-	}
-	err = app.users.Insert(r.Context(), form.Name, form.Email, form.Password)
-	if err != nil {
-		app.serverError(w, r, err)
-	}
-	w.Header().Set("HX-Redirect", "/user/login")
-	w.WriteHeader(http.StatusSeeOther)
-}
+//func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+//	hxTrigger := r.Header.Get("HX-Trigger")
+//	app.logger.Info(hxTrigger)
+//	switch hxTrigger {
+//	case "name":
+//		name := r.URL.Query().Get("name")
+//		var errMsg string
+//		if !validator.NotBlank(name) {
+//			w.WriteHeader(http.StatusOK)
+//			errMsg = "Name cannot be blank"
+//		}
+//		app.renderHtmxPartial(w, r, "field_error", errMsg)
+//	case "email":
+//		email := r.URL.Query().Get("email")
+//		var errMsg string
+//		if !validator.EmailValidator(email) {
+//			w.WriteHeader(http.StatusOK)
+//			errMsg = "Email contains errors"
+//		}
+//		app.renderHtmxPartial(w, r, "field_error", errMsg)
+//	case "password":
+//		password := r.URL.Query().Get("password")
+//		var errMsg string
+//		if !validator.PasswordValidator(password) {
+//			w.WriteHeader(http.StatusOK)
+//			errMsg = "Password cannot be blank or less than 8 characters"
+//		}
+//		app.renderHtmxPartial(w, r, "field_error", errMsg)
+//	default:
+//		app.render(w, r, http.StatusOK, "signup.html", app.newTemplateData(r))
+//	}
+//}
+//
+//func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+//	var form signUpForm
+//	err := app.decodePostForm(r, &form)
+//	if err != nil {
+//		app.clientError(w)
+//		return
+//	}
+//	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
+//	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
+//	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+//	form.CheckField(validator.Matches(form.Email, validator.EmailRX), "email", "This field must be a valid email address")
+//	if !form.Valid() {
+//		data := app.newTemplateData(r)
+//		data.Form = form
+//		app.renderHtmxPartial(w, r, "form_error", data)
+//		return
+//	}
+//	err = app.users.Insert(r.Context(), form.Name, form.Email, form.Password)
+//	if err != nil {
+//		app.serverError(w, r, err)
+//	}
+//	w.Header().Set("HX-Redirect", "/user/login")
+//	w.WriteHeader(http.StatusSeeOther)
+//}
 
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	hxTrigger := r.Header.Get("HX-Trigger")

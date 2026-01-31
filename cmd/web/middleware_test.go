@@ -18,7 +18,9 @@ func TestCommonHeaders(t *testing.T) {
 		t.Fatal(err)
 	}
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("OK"))
+		if _, err := w.Write([]byte("OK")); err != nil {
+			t.Fatal(err)
+		}
 	})
 	commonHeaders(next).ServeHTTP(rr, r)
 	rs := rr.Result()
@@ -38,7 +40,11 @@ func TestCommonHeaders(t *testing.T) {
 	expectedValue = "Go"
 	assert.Equal(t, rs.Header.Get("Server"), expectedValue)
 	assert.Equal(t, rs.StatusCode, http.StatusOK)
-	defer rs.Body.Close()
+	defer func() {
+		if err := rs.Body.Close(); err != nil {
+			t.Fatal(err)
+		}
+	}()
 	body, err := io.ReadAll(rs.Body)
 	if err != nil {
 		t.Fatal(err)

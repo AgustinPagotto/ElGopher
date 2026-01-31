@@ -24,7 +24,11 @@ func main() {
 	if err != nil {
 		log.Fatal("Unable to connect to database: ", err)
 	}
-	defer conn.Close(context.Background())
+	defer func() {
+		if err := conn.Close(context.Background()); err != nil {
+			log.Fatalf("error closing DB connection: %v", err)
+		}
+	}()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		log.Fatal(err)
