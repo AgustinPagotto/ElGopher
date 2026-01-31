@@ -54,7 +54,7 @@ func (am *ArticleModel) Insert(ctx context.Context, title, body string, publish 
 func (am *ArticleModel) Get(ctx context.Context, id int) (Article, error) {
 	var article Article
 	sqlQuery := `SELECT id, title, body, slug, excerpt, is_published, created, updated_at FROM articles WHERE id = $1;`
-	err := am.POOL.QueryRow(ctx, sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created)
+	err := am.POOL.QueryRow(ctx, sqlQuery, id).Scan(&article.ID, &article.Title, &article.Body, &article.Slug, &article.Excerpt, &article.IsPublished, &article.Created, &article.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return Article{}, ErrNoRecord
@@ -138,7 +138,7 @@ func (am *ArticleModel) GetLatest(ctx context.Context) (Article, error) {
 }
 
 func (am *ArticleModel) Delete(ctx context.Context, id int) error {
-	sqlQuery := `DELETE FROM articles WHERE id = ?;`
+	sqlQuery := `DELETE FROM articles WHERE id = $1;`
 	_, err := am.POOL.Exec(context.Background(), sqlQuery, id)
 	if err != nil {
 		return err
