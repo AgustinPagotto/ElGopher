@@ -45,7 +45,7 @@ func TestSetLanguage(t *testing.T) {
 	ts := newTestServer(t, app.routes())
 	status, _, _ := ts.get(t, "/pref/lng")
 	assert.Equal(t, status, http.StatusOK)
-	status, _, body := ts.get(t, "/")
+	_, _, body := ts.get(t, "/")
 	assert.StringContains(t, string(body), "Bienvenido")
 }
 
@@ -54,7 +54,7 @@ func TestSetLightMode(t *testing.T) {
 	ts := newTestServer(t, app.routes())
 	status, _, _ := ts.get(t, "/pref/thm")
 	assert.Equal(t, status, http.StatusOK)
-	status, _, body := ts.get(t, "/")
+	_, _, body := ts.get(t, "/")
 	assert.StringContains(t, string(body), "light")
 }
 
@@ -123,8 +123,8 @@ func TestArticleCreate(t *testing.T) {
 		form.Add("email", "alice@example.com")
 		form.Add("password", "pa$$word")
 		form.Add("csrf_token", token)
-		status, _, body := ts.postForm(t, "/user/login", form)
-		status, _, body = ts.get(t, "/article/create")
+		_, _, _ = ts.postForm(t, "/user/login", form)
+		status, _, body := ts.get(t, "/article/create")
 		assert.Equal(t, status, http.StatusOK)
 		assert.StringContains(t, body, `hx-post="/article/create"`)
 	})
