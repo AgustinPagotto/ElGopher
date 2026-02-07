@@ -121,3 +121,8 @@ func noSurf(next http.Handler) http.Handler {
 	csrfHandler.SetIsTLSFunc(func(r *http.Request) bool { return r.TLS != nil })
 	return csrfHandler
 }
+
+func (a *application) registerEvents(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	})
+}
