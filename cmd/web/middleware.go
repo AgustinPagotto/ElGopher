@@ -140,9 +140,11 @@ func (a *application) registerEvents(next http.Handler) http.Handler {
 		go func(articleID *int, path string, lang, theme bool) {
 			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 			defer cancel()
-			_ = a.events.Insert(ctx, articleID, path, lang, theme)
+			err := a.events.Insert(ctx, articleID, path, lang, theme)
+			if err != nil {
+				a.logger.Info("couldn't append the log", "path", path)
+			}
 		}(articleID, path, lang, theme)
-
 		next.ServeHTTP(w, r)
 	})
 }
