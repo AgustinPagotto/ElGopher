@@ -5,7 +5,7 @@
 
 <section>
   <h2>Total Views</h2>
-  <strong>25</strong>
+  <strong>{{ .TotalViews}}</strong>
 </section>
 
 <section>
@@ -18,18 +18,12 @@
       </tr>
     </thead>
     <tbody>
+      {{ range .DailyViews }}
       <tr>
-        <td>1</td>
-        <td>15</td>
+        <td>{{ .Day }}</td>
+        <td>{{ .Views }}</td>
       </tr>
-      <tr>
-        <td>1</td>
-        <td>15</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>15</td>
-      </tr>
+      {{ end }}
     </tbody>
   </table>
 </section>
@@ -43,10 +37,12 @@
       </tr>
     </thead>
     <tbody>
+      {{ range .TopArticles }}
       <tr>
-        <td>hello world</td>
-        <td>150</td>
+        <td>{{ .ArticleSlug }}</td>
+        <td>{{ .Views }}</td>
       </tr>
+      {{ end }}
     </tbody>
   </table>
 </section>

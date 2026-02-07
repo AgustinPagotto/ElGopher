@@ -128,6 +128,10 @@ func (a *application) registerEvents(next http.Handler) http.Handler {
 		theme := a.sessionManager.GetBool(r.Context(), "isLightTheme")
 		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
 		path := r.URL.Path
+		if !shouldTrackPath(path) {
+			next.ServeHTTP(w, r)
+			return
+		}
 		const articlePrefix = "/article/view/"
 		var articleID *int
 		if slug, found := strings.CutPrefix(path, articlePrefix); found {
