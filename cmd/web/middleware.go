@@ -130,8 +130,7 @@ func (a *application) registerEvents(next http.Handler) http.Handler {
 		path := r.URL.Path
 		const articlePrefix = "/article/view/"
 		var articleID *int
-		slug := strings.TrimPrefix(path, articlePrefix)
-		if strings.HasPrefix(path, articlePrefix) {
+		if slug, found := strings.CutPrefix(path, articlePrefix); found {
 			if slug != "" {
 				if article, err := a.articles.GetWithSlug(r.Context(), slug); err == nil {
 					articleID = &article.ID
