@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/justinas/nosurf"
@@ -126,6 +127,23 @@ func (a *application) registerEvents(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		theme := a.sessionManager.GetBool(r.Context(), "isLightTheme")
 		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
+		path := r.URL.Path
+		const articlePrefix = "/article/view/"
+		var articleID *int
+		slug := strings.TrimPrefix(path, articlePrefix)
+		if strings.HasPrefix(path, articlePrefix) {
+			if slug != "" {
+				if article, err := a.articles.GetWithSlug(r.Context(), slug); err == nil {
+					articleID = &article.ID
+				}
+			}
+		}
+		go func(articleID *int, path string, lang, theme bool) {
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			defer cancel()
+			_ = a.events.Insert(ctx, articleID, path, lang, theme)
+		}(articleID, path, lang, theme)
 
+		next.ServeHTTP(w, r)
 	})
 }
