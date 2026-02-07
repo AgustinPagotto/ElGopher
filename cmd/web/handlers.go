@@ -356,3 +356,29 @@ func (app *application) articlePatch(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Redirect", "/articles")
 	w.WriteHeader(http.StatusOK)
 }
+<<<<<<< HEAD
+=======
+
+func (app *application) getAnalytics(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	topArticles, err := app.events.TopArticles(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	dailyViews, err := app.events.ViewsPerDay(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	totalViews, err := app.events.TotalViews(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	data.TotalViews = totalViews
+	data.DailyViews = dailyViews
+	data.TopArticles = topArticles
+	app.render(w, r, http.StatusOK, "analytics.html", data)
+}
+>>>>>>> 4bebb8f (add analytics base html, add events article data on template data, add not tracking paths, fix querys)

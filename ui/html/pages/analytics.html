@@ -1,0 +1,49 @@
+{{define "title"}}Analytics{{end}} {{define "main"}}
+<div class="scnd-header">
+  <h1>Analytics</h1>
+</div>
+
+<section>
+  <h2>Total Views</h2>
+  <strong>{{ .TotalViews}}</strong>
+</section>
+
+<section>
+  <h2>Views of the last 14 days</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Views</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .DailyViews }}
+      <tr>
+        <td>{{ .Day }}</td>
+        <td>{{ .Views }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</section>
+<section>
+  <h2>Top Posts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Post</th>
+        <th>Views</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .TopArticles }}
+      <tr>
+        <td>{{ .ArticleSlug }}</td>
+        <td>{{ .Views }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</section>
+{{end}}

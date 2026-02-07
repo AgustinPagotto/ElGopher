@@ -9,12 +9,23 @@ import (
 	"os"
 	"runtime/debug"
 	"strconv"
+	"strings"
 
 	"github.com/AgustinPagotto/ElGopher/internal/i18n"
 	"github.com/AgustinPagotto/ElGopher/ui"
 	"github.com/go-playground/form/v4"
 	"github.com/justinas/nosurf"
 )
+
+var analyticsIgnorePaths = map[string]struct{}{
+	"/analytics": {},
+	"/ping":      {},
+}
+
+var analyticsIgnorePrefixes = []string{
+	"/pref/",
+	"/static/",
+}
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {
 	var method = r.Method
@@ -135,4 +146,16 @@ func IsProd() bool {
 		return false
 	}
 	return ok
+}
+
+func shouldTrackPath(path string) bool {
+	if _, ignore := analyticsIgnorePaths[path]; ignore {
+		return false
+	}
+	for _, prefix := range analyticsIgnorePrefixes {
+		if strings.HasPrefix(path, prefix) {
+			return false
+		}
+	}
+	return true
 }

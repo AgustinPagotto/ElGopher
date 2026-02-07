@@ -63,15 +63,9 @@ func (em *EventModel) TotalViews(ctx context.Context) (int, error) {
 	}
 	return total, nil
 }
+
 func (em *EventModel) ViewsPerDay(ctx context.Context) ([]DailyViews, error) {
-	sqlQuery := `
-		SELECT
-			DATE(viewed_at) AS day,
-			COUNT(*) AS views
-		FROM events 
-		GROUP BY day
-		ORDER BY day DESC
-		`
+	sqlQuery := `SELECT DATE(viewed_at) AS day, COUNT(*) AS views FROM events GROUP BY day ORDER BY day DESC;`
 	rows, err := em.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
@@ -90,15 +84,7 @@ func (em *EventModel) ViewsPerDay(ctx context.Context) ([]DailyViews, error) {
 }
 
 func (em *EventModel) TopArticles(ctx context.Context) ([]ArticleTop, error) {
-	sqlQuery := `
-          SELECT
-            a.slug,
-            COUNT(*) AS views
-          FROM events e
-          JOIN articles a ON a.id = e.article_id
-          GROUP BY a.slug
-          ORDER BY views DESC;
-	`
+	sqlQuery := `SELECT a.slug, COUNT(*) AS views FROM events e JOIN articles a ON a.id = e.article_id GROUP BY a.slug ORDER BY views DESC;`
 	rows, err := em.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
