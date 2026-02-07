@@ -12,6 +12,7 @@ import (
 type Event struct {
 	ID           int
 	ArticleId    int
+	Page         string
 	IsSpanish    bool
 	IsLightTheme bool
 	ViewedAt     time.Time
@@ -30,7 +31,7 @@ type ArticleTop struct {
 }
 
 type EventModelInterface interface {
-	Insert(ctx context.Context, articleId int, isSpanish, isLightTheme bool) error
+	Insert(ctx context.Context, articleId int, page string, isSpanish, isLightTheme bool) error
 	TotalViews(ctx context.Context) (int, error)
 	ViewsPerDay(ctx context.Context) ([]DailyViews, error)
 	TopArticles(ctx context.Context) ([]DailyViews, error)
@@ -40,13 +41,13 @@ type EventModel struct {
 	POOL *pgxpool.Pool
 }
 
-func (em *EventModel) Insert(ctx context.Context, articleId int, isSpanish, isLightTheme bool) error {
+func (em *EventModel) Insert(ctx context.Context, articleId int, page string, isSpanish, isLightTheme bool) error {
 	sqlQuery := `
-	INSERT INTO events (article_id, is_spanish, is_light_theme, viewed_at) 
-	VALUES ($1, $2, $3, CURRENT_TIMESTAMP);
+	INSERT INTO events (article_id, page, is_spanish, is_light_theme, viewed_at) 
+	VALUES ($1, $2, $3, $4 CURRENT_TIMESTAMP);
 	`
 	var id int
-	err := em.POOL.QueryRow(ctx, sqlQuery, articleId, isSpanish, isLightTheme).Scan(&id)
+	err := em.POOL.QueryRow(ctx, sqlQuery, articleId, page, isSpanish, isLightTheme).Scan(&id)
 	if err != nil {
 		return err
 	}
