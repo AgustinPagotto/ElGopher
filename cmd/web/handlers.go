@@ -356,3 +356,8 @@ func (app *application) articlePatch(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Redirect", "/articles")
 	w.WriteHeader(http.StatusOK)
 }
+
+func (app *application) getAnalytics(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	app.render(w, r, http.StatusOK, "analytics.html", data)
+}
