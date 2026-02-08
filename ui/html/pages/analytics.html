@@ -1,0 +1,69 @@
+{{define "title"}}Analytics{{end}} {{define "main"}}
+<h1>Analytics</h1>
+
+<main class="container">
+  <section class="grid">
+    <article>
+      <div class="stat-row">
+        <h3 style="margin-bottom: 0">Total Views</h3>
+        <strong style="font-size: 2.75rem"> {{ .TotalViews }} </strong>
+      </div>
+    </article>
+  </section>
+  <section>
+    <article>
+      <header>
+        <h3>Views – Last 14 Days</h3>
+      </header>
+
+      <table role="grid">
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col">Views</th>
+            <th scope="col">Spanish</th>
+            <th scope="col">White Themed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .DailyViews }}
+          <tr>
+            <td>{{ .Day }}</td>
+            <td>{{ .Views }}</td>
+            <td>{{ .SpanishAmount}}</td>
+            <td>{{ .LightThemeAmount}}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <section>
+    <article>
+      <header>
+        <h3>Top Articles</h3>
+      </header>
+
+      <table role="grid">
+        <thead>
+          <tr>
+            <th scope="col">Article</th>
+            <th scope="col">Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .TopArticles }}
+          <tr>
+            <td>
+              <code>{{ .ArticleSlug }}</code>
+            </td>
+            <td>{{ .Views }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </article>
+  </section>
+</main>
+{{end}}

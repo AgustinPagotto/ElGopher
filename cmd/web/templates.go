@@ -16,6 +16,9 @@ type templateData struct {
 	Articles        []models.Article
 	Article         models.Article
 	ArticleBody     template.HTML
+	TopArticles     []models.ArticleTop
+	DailyViews      []models.DailyViews
+	TotalViews      int
 	Errors          []string
 	Form            any
 	IsAuthenticated bool

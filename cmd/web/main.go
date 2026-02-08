@@ -23,6 +23,7 @@ type application struct {
 	templateCache  map[string]*template.Template
 	articles       models.ArticleModelInterface
 	users          models.UserModelInterface
+	events         models.EventModelInterface
 	markdownParser goldmark.Markdown
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
@@ -61,6 +62,7 @@ func main() {
 		templateCache:  templateCache,
 		articles:       &models.ArticleModel{POOL: pool},
 		users:          &models.UserModel{POOL: pool},
+		events:         &models.EventModel{POOL: pool},
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
 		markdownParser: goldmark.New(
