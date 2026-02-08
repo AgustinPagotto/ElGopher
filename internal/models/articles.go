@@ -147,8 +147,10 @@ func (am *ArticleModel) Delete(ctx context.Context, id int) error {
 }
 
 func (am *ArticleModel) Update(ctx context.Context, title, body string, is_published bool, id int) error {
-	sqlQuery := `UPDATE articles SET title = $1, body = $2, is_published = $3 WHERE id = $4;`
-	_, err := am.POOL.Exec(ctx, sqlQuery, title, body, is_published, id)
+	slug := slugifyTitle(title)
+	excerpt := generateExcerpt(body)
+	sqlQuery := `UPDATE articles SET title = $1, slug = $2, excerpt = $3, body = $4, is_published = $5 WHERE id = $6;`
+	_, err := am.POOL.Exec(ctx, sqlQuery, title, slug, excerpt, body, is_published, id)
 	if err != nil {
 		return err
 	}
