@@ -20,14 +20,18 @@
         <thead>
           <tr>
             <th scope="col">Day</th>
-            <th scope="col" style="text-align: right">Views</th>
+            <th scope="col">Views</th>
+            <th scope="col">Spanish</th>
+            <th scope="col">White Themed</th>
           </tr>
         </thead>
         <tbody>
           {{ range .DailyViews }}
           <tr>
             <td>{{ .Day }}</td>
-            <td style="text-align: right">{{ .Views }}</td>
+            <td>{{ .Views }}</td>
+            <td>{{ .SpanishAmount}}</td>
+            <td>{{ .LightThemeAmount}}</td>
           </tr>
           {{ end }}
         </tbody>
@@ -45,7 +49,7 @@
         <thead>
           <tr>
             <th scope="col">Article</th>
-            <th scope="col" style="text-align: right">Views</th>
+            <th scope="col">Views</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +58,7 @@
             <td>
               <code>{{ .ArticleSlug }}</code>
             </td>
-            <td style="text-align: right">{{ .Views }}</td>
+            <td>{{ .Views }}</td>
           </tr>
           {{ end }}
         </tbody>

@@ -65,7 +65,7 @@ func (em *EventModel) TotalViews(ctx context.Context) (int, error) {
 }
 
 func (em *EventModel) ViewsPerDay(ctx context.Context) ([]DailyViews, error) {
-	sqlQuery := `SELECT DATE(viewed_at) AS day, COUNT(*) AS views FROM events GROUP BY day ORDER BY day DESC;`
+	sqlQuery := `SELECT DATE(viewed_at) AS day, COUNT(*), COUNT(*) FILTER (WHERE is_spanish = TRUE), COUNT(*) FILTER (WHERE is_light_theme = TRUE) FROM events GROUP BY day ORDER BY day DESC;`
 	rows, err := em.POOL.Query(ctx, sqlQuery)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (em *EventModel) ViewsPerDay(ctx context.Context) ([]DailyViews, error) {
 	var result []DailyViews
 	for rows.Next() {
 		var d DailyViews
-		if err := rows.Scan(&d.Day, &d.Views); err != nil {
+		if err := rows.Scan(&d.Day, &d.Views, &d.SpanishAmount, &d.LightThemeAmount); err != nil {
 			return nil, err
 		}
 		result = append(result, d)
