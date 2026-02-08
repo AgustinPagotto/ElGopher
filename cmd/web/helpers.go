@@ -25,6 +25,7 @@ var analyticsIgnorePaths = map[string]struct{}{
 var analyticsIgnorePrefixes = []string{
 	"/pref/",
 	"/static/",
+	"/user/",
 }
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {
