@@ -1,49 +1,65 @@
 {{define "title"}}Analytics{{end}} {{define "main"}}
-<div class="scnd-header">
-  <h1>Analytics</h1>
-</div>
+<h1>Analytics</h1>
 
-<section>
-  <h2>Total Views</h2>
-  <strong>{{ .TotalViews}}</strong>
-</section>
+<main class="container">
+  <section class="grid">
+    <article>
+      <div class="stat-row">
+        <h3 style="margin-bottom: 0">Total Views</h3>
+        <strong style="font-size: 2.75rem"> {{ .TotalViews }} </strong>
+      </div>
+    </article>
+  </section>
+  <section>
+    <article>
+      <header>
+        <h3>Views – Last 14 Days</h3>
+      </header>
 
-<section>
-  <h2>Views of the last 14 days</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Views</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{ range .DailyViews }}
-      <tr>
-        <td>{{ .Day }}</td>
-        <td>{{ .Views }}</td>
-      </tr>
-      {{ end }}
-    </tbody>
-  </table>
-</section>
-<section>
-  <h2>Top Posts</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Post</th>
-        <th>Views</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{ range .TopArticles }}
-      <tr>
-        <td>{{ .ArticleSlug }}</td>
-        <td>{{ .Views }}</td>
-      </tr>
-      {{ end }}
-    </tbody>
-  </table>
-</section>
+      <table role="grid">
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col" style="text-align: right">Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .DailyViews }}
+          <tr>
+            <td>{{ .Day }}</td>
+            <td style="text-align: right">{{ .Views }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <section>
+    <article>
+      <header>
+        <h3>Top Articles</h3>
+      </header>
+
+      <table role="grid">
+        <thead>
+          <tr>
+            <th scope="col">Article</th>
+            <th scope="col" style="text-align: right">Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .TopArticles }}
+          <tr>
+            <td>
+              <code>{{ .ArticleSlug }}</code>
+            </td>
+            <td style="text-align: right">{{ .Views }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </article>
+  </section>
+</main>
 {{end}}
