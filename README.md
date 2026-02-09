@@ -4,13 +4,12 @@ A modern, lightweight blog platform built with Go, featuring markdown support, u
 
 ## Overview
 
-ElGopher is a full-featured blogging platform that emphasizes simplicity, performance, and developer experience. It provides a clean interface for creating and managing articles with markdown support, syntax highlighting for code blocks, and a responsive design that works across all devices.
+ElGopher is a full-featured lightweight blogging platform that emphasizes simplicity and performance. It provides a clean interface for creating and managing articles with markdown support, syntax highlighting for code blocks, and a responsive design that works across all devices.
 
 ## Features
 
 - **Article Management**: Create, edit, publish, and manage blog articles with markdown syntax
 - **Markdown Support**: Full markdown parsing with syntax highlighting for code blocks (using Goldmark and Chroma)
-- **User Authentication**: Secure user login and session management with bcrypt password hashing
 - **Internationalization (i18n)**: Multi-language support (English and Spanish)
 - **Theme Support**: Light and dark theme preferences
 - **HTMX Integration**: Dynamic, responsive UI without heavy JavaScript frameworks
@@ -23,7 +22,6 @@ ElGopher is a full-featured blogging platform that emphasizes simplicity, perfor
   - HTTP Strict Transport Security (HSTS) in production
 - **Database Migrations**: Structured database schema with versioned migrations
 - **Docker Support**: Ready-to-deploy containerized application
-- **Production Ready**: Configured for deployment on Fly.io
 
 ## Technology Stack
 
@@ -76,32 +74,8 @@ ElGopher/
 │   ├── static/        # Static assets (CSS, JS, images)
 │   └── efs.go         # Embedded file system
 ├── Dockerfile         # Multi-stage Docker build
-├── fly.toml          # Fly.io deployment configuration
 └── go.mod            # Go module dependencies
 ```
-
-## Database Schema
-
-### Articles Table
-- `id`: Primary key
-- `title`: Article title
-- `body`: Markdown content
-- `slug`: URL-friendly identifier
-- `excerpt`: Auto-generated article preview
-- `is_published`: Publication status
-- `created`: Creation timestamp
-- `updated_at`: Last update timestamp
-
-### Users Table
-- `id`: Primary key
-- `name`: User display name
-- `email`: Unique user email
-- `hashed_password`: Bcrypt-hashed password
-- `created`: Registration timestamp
-
-### Sessions Table
-- PostgreSQL-backed session storage
-- Automatic expiration (12-hour lifetime)
 
 ## Installation
 
@@ -152,39 +126,10 @@ Environment variables:
 
 - `DATABASE_URL`: PostgreSQL connection string (default: `postgres://postgres:admin@localhost:5432/elgopher`)
 - `PORT`: Server port (default: `4000`)
-- `ADMIN_EMAIL`: Initial admin user email
-- `ADMIN_NAME`: Initial admin user name
-- `ADMIN_PASSWORD`: Initial admin user password
+- `ADMIN_EMAIL`: Initial admin user email for seed
+- `ADMIN_NAME`: Initial admin user name for seed
+- `ADMIN_PASSWORD`: Initial admin user password for seed
 - `IS_PROD`: Production mode flag
-
-## Docker Deployment
-
-Build and run with Docker:
-
-```bash
-docker build -t elgopher .
-docker run -p 8080:8080 \
-  -e DATABASE_URL="your_database_url" \
-  -e IS_PROD="true" \
-  elgopher
-```
-
-The Docker image uses a multi-stage build for optimal size and security, running as a non-root user.
-
-## Fly.io Deployment
-
-The application is configured for deployment on Fly.io:
-
-```bash
-fly launch
-fly deploy
-```
-
-Configuration is provided in `fly.toml` with:
-- Auto-start/stop machines
-- 256MB memory allocation
-- HTTPS enforcement
-- São Paulo (GRU) region
 
 ## API Routes
 
@@ -233,55 +178,8 @@ Tests include:
 
 ## Development Features
 
-- **Hot Reload**: Use tools like `air` or `reflex` for automatic reloading during development
 - **Mock Implementations**: Built-in mocks for testing without database dependencies
 - **Logging**: Structured JSON logging with `slog`
 - **Connection Pooling**: Efficient database connection management with pgxpool
 - **Request Timeouts**: 5-second timeout middleware to prevent hanging requests
 - **Panic Recovery**: Graceful error handling and recovery
-
-## Security Considerations
-
-- Passwords are hashed using bcrypt with cost factor 12
-- CSRF protection on all state-changing requests
-- Secure session cookies (Secure flag in production)
-- Content Security Policy headers
-- XSS protection headers
-- Clickjacking prevention (X-Frame-Options)
-- MIME type sniffing prevention
-- HSTS in production environments
-
-## Performance
-
-- Lightweight binary (multi-stage Docker build with stripped symbols)
-- Connection pooling for database efficiency
-- Template caching for faster rendering
-- Embedded file system for static assets
-- Minimal external dependencies
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with tests
-4. Submit a pull request
-
-## License
-
-MIT License - Copyright (c) 2025 Agustin Oliveros Pagotto
-
-See [LICENSE](LICENSE) file for full details.
-
-## Author
-
-**Agustin Oliveros Pagotto**
-
-## Acknowledgments
-
-Built with modern Go best practices and leveraging excellent open-source libraries:
-- Goldmark for markdown parsing
-- Chroma for syntax highlighting
-- pgx for PostgreSQL connectivity
-- SCS for session management
-- Alice for middleware chaining
