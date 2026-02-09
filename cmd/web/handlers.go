@@ -356,8 +356,6 @@ func (app *application) articlePatch(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("HX-Redirect", "/articles")
 	w.WriteHeader(http.StatusOK)
 }
-<<<<<<< HEAD
-=======
 
 func (app *application) getAnalytics(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
@@ -381,4 +379,3 @@ func (app *application) getAnalytics(w http.ResponseWriter, r *http.Request) {
 	data.TopArticles = topArticles
 	app.render(w, r, http.StatusOK, "analytics.html", data)
 }
->>>>>>> 4bebb8f (add analytics base html, add events article data on template data, add not tracking paths, fix querys)
