@@ -29,6 +29,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("PATCH /article/{id}", dynamic.ThenFunc(app.articlePatch))
 	mux.Handle("GET /article/create", protected.ThenFunc(app.articleCreate))
 	mux.Handle("POST /article/create", protected.ThenFunc(app.articleCreatePost))
+	mux.Handle("GET /analytics", protected.ThenFunc(app.getAnalytics))
 	standars := alice.New(app.recoverPanic, app.logRequest, commonHeaders, timeoutMiddleware)
 	return standars.Then(mux)
 }
