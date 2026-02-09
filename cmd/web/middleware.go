@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/justinas/nosurf"
@@ -120,4 +121,34 @@ func noSurf(next http.Handler) http.Handler {
 	})
 	csrfHandler.SetIsTLSFunc(func(r *http.Request) bool { return r.TLS != nil })
 	return csrfHandler
+}
+
+func (a *application) registerEvents(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		theme := a.sessionManager.GetBool(r.Context(), "isLightTheme")
+		lang := a.sessionManager.GetBool(r.Context(), "isSpanish")
+		path := r.URL.Path
+		if !shouldTrackPath(path) {
+			next.ServeHTTP(w, r)
+			return
+		}
+		const articlePrefix = "/article/view/"
+		var articleID *int
+		if slug, found := strings.CutPrefix(path, articlePrefix); found {
+			if slug != "" {
+				if article, err := a.articles.GetWithSlug(r.Context(), slug); err == nil {
+					articleID = &article.ID
+				}
+			}
+		}
+		go func(articleID *int, path string, lang, theme bool) {
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			defer cancel()
+			err := a.events.Insert(ctx, articleID, path, lang, theme)
+			if err != nil {
+				a.logger.Info("couldn't append the log", "path", path)
+			}
+		}(articleID, path, lang, theme)
+		next.ServeHTTP(w, r)
+	})
 }
