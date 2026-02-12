@@ -14,15 +14,15 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o web ./cmd/web
 
 # Final stage
-FROM debian:bookworm-slim
+FROM alpine:3.21
 
 WORKDIR /app
 
 # Install CA certificates and timezone data
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates tzdata && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ca-certificates tzdata
 
 # Create non-root user for security
-RUN useradd -r -s /bin/false appuser
+RUN adduser -D -s /sbin/nologin appuser
 
 # Copy the binary from builder
 COPY --from=builder /app/web .

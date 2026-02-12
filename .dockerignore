@@ -1,8 +1,27 @@
 # Go build output
 bin/
 
-# Git metadata
+# Git/Github metadata
 .git/
+.github/
 
 # Sensitive configuration
 *.env
+
+# Documentation
+README.md
+LICENSE
+
+# Development Files
+.DS_Store
+
+# CI/CD config
+fly.toml
+.gitignore
+
+# Test Files
+*_test.go
+
+# Docker files (no need to copy Dockerfile into image)
+Dockerfile
+.dockerignore
