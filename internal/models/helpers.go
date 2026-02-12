@@ -25,10 +25,27 @@ func slugifyTitle(title string) string {
 }
 
 func generateExcerpt(body string) string {
-	words := strings.Fields(body)
-	if len(words) <= 30 {
-		return body
+	// Strip markdown syntax
+	cleaned := body
+	cleaned = strings.ReplaceAll(cleaned, "#", "")
+	cleaned = strings.ReplaceAll(cleaned, "*", "")
+	cleaned = strings.ReplaceAll(cleaned, "_", "")
+	cleaned = strings.ReplaceAll(cleaned, "`", "")
+	cleaned = strings.ReplaceAll(cleaned, "[", "")
+	cleaned = strings.ReplaceAll(cleaned, "]", "")
+	cleaned = strings.ReplaceAll(cleaned, "(", "")
+	cleaned = strings.ReplaceAll(cleaned, ")", "")
+	cleaned = strings.TrimSpace(cleaned)
+
+	const maxLength = 155
+	if len(cleaned) <= maxLength {
+		return cleaned
 	}
-	excerpt := strings.Join(words[:30], " ")
-	return excerpt
+
+	truncated := cleaned[:maxLength]
+	lastSpace := strings.LastIndex(truncated, " ")
+	if lastSpace > 0 {
+		truncated = truncated[:lastSpace]
+	}
+	return truncated + "..."
 }
