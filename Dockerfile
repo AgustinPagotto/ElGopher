@@ -14,7 +14,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o web ./cmd/web
 
 # Final stage
-FROM alpine:3.21
+FROM alpine:3.23
 
 WORKDIR /app
 
