@@ -3,9 +3,12 @@ package main
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 
 	"github.com/AgustinPagotto/ElGopher/internal/models"
 	"github.com/AgustinPagotto/ElGopher/internal/validator"
@@ -390,4 +393,27 @@ func (app *application) getSiteMap(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
 	w.Write([]byte(xml.Header))
 	xml.NewEncoder(w).Encode(sitemap)
+}
+
+func (app *application) getRobotsTxt(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://elgopher.fly.dev"
+	}
+
+	baseURL = strings.TrimSuffix(baseURL, "/")
+
+	robotsContent := fmt.Sprintf(`User-agent: *
+Allow: /
+
+# Disallow admin and preference routes
+Disallow: /user/
+Disallow: /pref/
+Disallow: /analytics
+
+# Sitemap location
+Sitemap: %s/sitemap.xml
+`, baseURL)
+	w.Write([]byte(robotsContent))
 }
