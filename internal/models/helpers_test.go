@@ -39,14 +39,14 @@ func TestGenerateExcerpt(t *testing.T) {
 		wantResultExcerpt string
 	}{
 		{
-			name:              "30+ words body",
+			name:              "Long body gets truncated",
 			body:              "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam urna tempor pulvinar vivamus fringilla lacus nec metus bibendum egestas iaculis massa nisl malesuada lacinia integer nunc posuere ut hendrerit.",
-			wantResultExcerpt: "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam",
+			wantResultExcerpt: "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis...",
 		},
 		{
-			name:              "30 words body",
-			body:              "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam.",
-			wantResultExcerpt: "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam.",
+			name:              "Short body stays unchanged",
+			body:              "Lorem ipsum dolor sit amet.",
+			wantResultExcerpt: "Lorem ipsum dolor sit amet.",
 		},
 	}
 
