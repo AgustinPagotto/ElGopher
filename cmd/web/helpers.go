@@ -102,6 +102,12 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 }
 
 func (app *application) newTemplateData(r *http.Request) templateData {
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://elgopher.fly.dev"
+	}
+	baseURL = strings.TrimSuffix(baseURL, "/")
+	canonicalURL := baseURL + r.URL.Path
 	return templateData{
 		Form:            map[string]string{},
 		IsAuthenticated: app.isAuthenticated(r),
@@ -109,6 +115,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		IsLightTheme:    app.isLightTheme(r),
 		Translator:      app.getTranslator(r),
 		CSRFToken:       nosurf.Token(r),
+		CanonicalURL:    canonicalURL,
 	}
 }
 

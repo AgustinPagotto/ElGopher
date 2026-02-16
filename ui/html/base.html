@@ -9,6 +9,17 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{template "description" .}}" />
     <meta name="author" content="Agustin Oliveros Pagotto" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{.CanonicalURL}}" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="{{template "ogtype" .}}" />
+    <meta property="og:site_name" content="El Gopher" />
+    <meta property="og:title" content="{{template "title" .}}" />
+    <meta property="og:description" content="{{template "description" .}}" />
+    <meta property="og:url" content="{{.CanonicalURL}}" />
+    <meta property="og:image" content="https://elgopher.fly.dev/static/img/gopher.png"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
