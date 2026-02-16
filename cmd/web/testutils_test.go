@@ -46,7 +46,7 @@ func newTestApplication(t *testing.T) *application {
 		sessionManager: sessionManager,
 		users:          &mocks.UserModel{},
 		articles:       &mocks.ArticleModel{},
-		events:         &mocks.EventModel{}, // Add this line
+		events:         &mocks.EventModel{},
 		markdownParser: goldmark.New(
 			goldmark.WithExtensions(
 				highlighting.NewHighlighting(
