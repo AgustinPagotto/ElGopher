@@ -5,4 +5,5 @@ Allow: /
 Disallow: /user/
 Disallow: /pref/
 Disallow: /analytics
-
+Disallow: /article/create
+Disallow: /article/edit/
