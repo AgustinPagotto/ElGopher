@@ -26,6 +26,7 @@ type templateData struct {
 	IsLightTheme    bool
 	Translator      i18n.Translator
 	CSRFToken       string
+	CanonicalURL    string
 }
 
 func humanDate(t time.Time) string {

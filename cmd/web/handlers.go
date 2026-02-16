@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/xml"
 	"errors"
 	"html/template"
 	"net/http"
@@ -378,4 +379,15 @@ func (app *application) getAnalytics(w http.ResponseWriter, r *http.Request) {
 	data.DailyViews = dailyViews
 	data.TopArticles = topArticles
 	app.render(w, r, http.StatusOK, "analytics.html", data)
+}
+
+func (app *application) getSiteMap(w http.ResponseWriter, r *http.Request) {
+	sitemap, err := app.generateSitemapXml(r)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	w.Write([]byte(xml.Header))
+	xml.NewEncoder(w).Encode(sitemap)
 }

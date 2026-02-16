@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"html/template"
@@ -16,6 +17,17 @@ import (
 	"github.com/go-playground/form/v4"
 	"github.com/justinas/nosurf"
 )
+
+type SiteMap struct {
+	XMLName xml.Name `xml:"urlset"`
+	Xmlns   string   `xml:"xmlns,attr"`
+	URLs    []URL    `xml:"url"`
+}
+
+type URL struct {
+	Loc     string `xml:"loc"`
+	LastMod string `xml:"lastmod"`
+}
 
 var analyticsIgnorePaths = map[string]struct{}{
 	"/analytics": {},
@@ -90,6 +102,12 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 }
 
 func (app *application) newTemplateData(r *http.Request) templateData {
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "https://elgopher.fly.dev"
+	}
+	baseURL = strings.TrimSuffix(baseURL, "/")
+	canonicalURL := baseURL + r.URL.Path
 	return templateData{
 		Form:            map[string]string{},
 		IsAuthenticated: app.isAuthenticated(r),
@@ -97,6 +115,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 		IsLightTheme:    app.isLightTheme(r),
 		Translator:      app.getTranslator(r),
 		CSRFToken:       nosurf.Token(r),
+		CanonicalURL:    canonicalURL,
 	}
 }
 
@@ -159,4 +178,32 @@ func shouldTrackPath(path string) bool {
 		}
 	}
 	return true
+}
+
+func (app *application) generateSitemapXml(r *http.Request) (SiteMap, error) {
+	baseUrl := os.Getenv("BASE_URL")
+	sitemap := SiteMap{
+		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+	}
+	staticPages := []URL{
+		{Loc: baseUrl, LastMod: "2026-02-13"},
+		{Loc: baseUrl + "about", LastMod: "2026-02-13"},
+		{Loc: baseUrl + "articles", LastMod: "2026-02-13"},
+		{Loc: baseUrl + "projects", LastMod: "2026-02-13"},
+	}
+
+	sitemap.URLs = append(sitemap.URLs, staticPages...)
+
+	articles, err := app.articles.GetPublishedArticles(r.Context())
+	if err != nil {
+		return SiteMap{}, err
+	}
+
+	for _, article := range articles {
+		sitemap.URLs = append(sitemap.URLs, URL{
+			Loc:     fmt.Sprintf("%sarticle/view/%s", baseUrl, article.Slug),
+			LastMod: article.UpdatedAt.Format("2006-01-02"),
+		})
+	}
+	return sitemap, nil
 }

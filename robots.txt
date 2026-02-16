@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and preference routes
+Disallow: /user/
+Disallow: /pref/
+Disallow: /analytics
+Disallow: /article/create
+Disallow: /article/edit/
