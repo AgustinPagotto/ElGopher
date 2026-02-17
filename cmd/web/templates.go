@@ -36,6 +36,28 @@ func humanDate(t time.Time) string {
 	return t.UTC().Format("02/01/2006")
 }
 
+func getTimetoRead(articleBody string) int {
+	if articleBody == "" {
+		return 0
+	}
+	cleaned := articleBody
+	cleaned = strings.ReplaceAll(cleaned, "#", "")
+	cleaned = strings.ReplaceAll(cleaned, "*", "")
+	cleaned = strings.ReplaceAll(cleaned, "_", "")
+	cleaned = strings.ReplaceAll(cleaned, "`", "")
+	cleaned = strings.ReplaceAll(cleaned, "[", "")
+	cleaned = strings.ReplaceAll(cleaned, "]", "")
+	cleaned = strings.ReplaceAll(cleaned, "(", "")
+	cleaned = strings.ReplaceAll(cleaned, ")", "")
+	cleaned = strings.TrimSpace(cleaned)
+	bodySlice := strings.Fields(cleaned)
+	minutes := len(bodySlice) / 225
+	if minutes == 0 {
+		return 1
+	}
+	return minutes
+}
+
 func getTranslation(t templateData, key string) string {
 	return t.Translator.T(key)
 }
@@ -52,6 +74,7 @@ var functions = template.FuncMap{
 	"humanDate":      humanDate,
 	"getTranslation": getTranslation,
 	"addBreakLines":  addBreakLines,
+	"getTimetoRead":  getTimetoRead,
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
