@@ -12,6 +12,10 @@
     {{end}}
 	</div>
     <h6>Published on: {{humanDate .Article.Created}}</h6>
+    <h6 style="font-style: italic; font-weight: normal;">
+	{{$time := getTimetoRead .Article.Body}}
+	{{$time}} {{if eq $time 1}}minute{{else}}minutes{{end}}
+    </h6>
   </div>
   <div class="container">{{.ArticleBody}}</div>
   {{end}}
