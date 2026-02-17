@@ -25,4 +25,7 @@ var ES = map[string]string{
 	"about.thanksparagraph": `En esta seccion voy a dar las gracias a las personas/autores que dejaron que aprenda de sus libros, podcasts y articulos, e hicieron mi camino de aprender y desarrollar en Go posible y mas ameno.
 	Muchas gracias a:`,
 	"projects.personalprojects": "Proyectos Personales",
+	"article.minute":            "minuto",
+	"article.minutes":           "minutos",
+	"article.publishedon":       "Publicado en:",
 }
